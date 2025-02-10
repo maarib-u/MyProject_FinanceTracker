@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.chart.PieChart?>
+
+<VBox alignment="CENTER" spacing="10" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.financetracker.ExpenseTrackerController">
+    <Label text="Expense Tracker"/>
+    <TextField fx:id="amountField" promptText="Enter amount"/>
+    <ComboBox fx:id="categoryBox"/>
+    <Button text="Add Expense" onAction="#addExpense"/>
+    <ListView fx:id="expenseList"/>
+    <PieChart fx:id="expenseChart"/>
+</VBox>
