@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox alignment="CENTER" spacing="15" stylesheets="@styles.css"
+      fx:controller="com.example.financetracker.BudgetTrackerController"
+      xmlns:fx="http://javafx.com/fxml">
+
+    <Label text="Budget Tracker" styleClass="title"/>
+
+    <HBox spacing="10">
+        <Label text="Monthly Budget:"/>
+        <TextField fx:id="budgetField" promptText="Enter budget"/>
+    </HBox>
+
+    <HBox spacing="10">
+        <Button text="Set Budget" onAction="#handleSetBudget"/>
+        <Button text="Back" onAction="#handleBack"/>
+    </HBox>
+
+    <Label fx:id="budgetStatusLabel" text="Budget Status" styleClass="status-label"/>
+
+</VBox>

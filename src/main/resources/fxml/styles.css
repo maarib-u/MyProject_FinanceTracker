@@ -1,0 +1,90 @@
+/* Global Styling */
+.root {
+    -fx-font-family: "Arial";
+    -fx-background-color: #f4f4f4;
+}
+
+/* Titles and Headings */
+.title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2C3E50;
+}
+
+/* VBox Styling */
+VBox {
+    -fx-padding: 20;
+    -fx-alignment: center;
+    -fx-spacing: 15;
+}
+
+/* Label Styling */
+Label {
+    -fx-font-size: 16px;
+    -fx-text-fill: #2C3E50;
+}
+
+/* TextFields and PasswordFields */
+TextField, PasswordField {
+    -fx-pref-width: 250px;
+    -fx-font-size: 14px;
+    -fx-padding: 5px;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+/* Buttons */
+Button {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 8px 15px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+}
+
+Button:hover {
+    -fx-background-color: #2980b9;
+}
+
+/* ListView Styling */
+ListView {
+    -fx-border-color: #bdc3c7;
+    -fx-background-color: white;
+    -fx-border-radius: 5px;
+}
+
+/* Pie Chart Styling */
+.chart-pie {
+    -fx-background-color: transparent;
+}
+
+/* ComboBox Styling */
+ComboBox {
+    -fx-pref-width: 250px;
+    -fx-font-size: 14px;
+}
+
+/* Alerts & Popups */
+.alert {
+    -fx-font-size: 14px;
+}
+
+/* Navigation Bar */
+.navbar {
+    -fx-background-color: #2C3E50;
+    -fx-padding: 10px;
+}
+
+.navbar Button {
+    -fx-background-color: #34495e;
+    -fx-text-fill: white;
+    -fx-padding: 10px;
+    -fx-font-size: 14px;
+}
+
+.navbar Button:hover {
+    -fx-background-color: #1abc9c;
+}

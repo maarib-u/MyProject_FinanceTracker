@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" spacing="15" stylesheets="@styles.css"
+      fx:controller="com.example.financetracker.CurrencyConverterController"
+      xmlns:fx="http://javafx.com/fxml">
+
+    <Label text="Currency Converter" styleClass="title"/>
+
+    <HBox spacing="10">
+        <Label text="From:"/>
+        <ComboBox fx:id="fromCurrencyBox"/>
+    </HBox>
+
+    <HBox spacing="10">
+        <Label text="To:"/>
+        <ComboBox fx:id="toCurrencyBox"/>
+    </HBox>
+
+    <HBox spacing="10">
+        <Label text="Amount:"/>
+        <TextField fx:id="amountField" promptText="Enter amount"/>
+    </HBox>
+
+    <Button text="Convert" onAction="#handleConvert"/>
+    <Label fx:id="resultLabel" text="Converted Amount: 0.00"/>
+
+    <Button text="Update Rates" onAction="#handleUpdateRates"/>
+
+</VBox>

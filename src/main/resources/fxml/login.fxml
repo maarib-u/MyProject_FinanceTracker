@@ -2,11 +2,18 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" spacing="10" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.financetracker.LoginController">
-    <Label text="Login"/>
-    <TextField fx:id="usernameField" promptText="Username"/>
-    <PasswordField fx:id="passwordField" promptText="Password"/>
+<VBox alignment="CENTER" spacing="15" stylesheets="@styles.css"
+      fx:controller="com.example.financetracker.LoginController"
+      xmlns:fx="http://javafx.com/fxml">
+
+    <Label text="Finance Tracker" styleClass="title"/>
+
+    <Label text="Username:"/>
+    <TextField fx:id="usernameField" promptText="Enter username"/>
+
+    <Label text="Password:"/>
+    <PasswordField fx:id="passwordField" promptText="Enter password"/>
+
     <Button text="Login" onAction="#handleLogin"/>
     <Button text="Register" onAction="#handleRegister"/>
 </VBox>
