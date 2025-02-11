@@ -1,4 +1,3 @@
-
 package com.example.financetracker;
 
 import javafx.application.Application;
@@ -15,10 +14,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class LoginScreen extends Application {
-    private Connection conn = DatabaseManager.getConnection(); // ✅ Directly initialize connection
+    private final Connection conn = DatabaseManager.getConnection(); // ✅ Initialize connection
 
     @Override
     public void start(Stage primaryStage) {
+        // Save primary stage in SceneManager
+        SceneManager.setPrimaryStage(primaryStage);
+
         VBox root = new VBox(10);
         root.setPadding(new Insets(10));
 
@@ -42,12 +44,9 @@ public class LoginScreen extends Application {
             String username = userField.getText();
             String password = passField.getText();
             if (validateLogin(username, password)) {
-                ExpenseTracker expenseTracker = new ExpenseTracker(username);
-                try {
-                    expenseTracker.start(primaryStage);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
+                // ✅ Use SceneController to switch scenes instead of calling ExpenseTracker
+                SceneController sceneController = new SceneController(SceneManager.getPrimaryStage());
+                sceneController.switchToScene("expense_tracker.fxml");
             } else {
                 showAlert("❌ Login Failed", "Incorrect username or password.");
             }
@@ -73,8 +72,7 @@ public class LoginScreen extends Application {
     private boolean registerUser(String username, String password) {
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 
-        try (Connection conn = DatabaseManager.getConnection()) {
-            PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Users (username, password) VALUES (?, ?)");
+        try (PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Users (username, password) VALUES (?, ?)")) {
             pstmt.setString(1, username);
             pstmt.setString(2, hashedPassword);
             pstmt.executeUpdate();
@@ -86,8 +84,7 @@ public class LoginScreen extends Application {
 
     // ✅ Secure password validation with BCrypt
     private boolean validateLogin(String username, String password) {
-        try (Connection conn = DatabaseManager.getConnection()) {
-            PreparedStatement pstmt = conn.prepareStatement("SELECT password FROM Users WHERE username = ?");
+        try (PreparedStatement pstmt = conn.prepareStatement("SELECT password FROM Users WHERE username = ?")) {
             pstmt.setString(1, username);
             ResultSet rs = pstmt.executeQuery();
 
@@ -106,5 +103,9 @@ public class LoginScreen extends Application {
         alert.setTitle(title);
         alert.setContentText(message);
         alert.show();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 }

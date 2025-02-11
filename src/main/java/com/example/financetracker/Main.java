@@ -10,11 +10,12 @@ public class Main extends Application {
         // Save the primary stage in SceneManager
         SceneManager.setPrimaryStage(primaryStage);
 
-        // Start with Login Scene
+        // Initialize and show the login screen
         SceneController sceneController = new SceneController(primaryStage);
         sceneController.switchToScene("login.fxml");
 
         primaryStage.setTitle("Finance Tracker");
+        primaryStage.show();
     }
 
     public static void main(String[] args) {

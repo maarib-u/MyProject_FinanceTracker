@@ -3,12 +3,29 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.chart.PieChart?>
 
-<VBox alignment="CENTER" spacing="10" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.financetracker.ExpenseTrackerController">
-    <Label text="Expense Tracker"/>
-    <TextField fx:id="amountField" promptText="Enter amount"/>
-    <ComboBox fx:id="categoryBox"/>
-    <Button text="Add Expense" onAction="#addExpense"/>
+<VBox alignment="CENTER" spacing="15" stylesheets="@styles.css"
+      fx:controller="com.example.financetracker.ExpenseTrackerController"
+      xmlns:fx="http://javafx.com/fxml">
+
+    <Label text="Expense Tracker" styleClass="title"/>
+
+    <HBox spacing="10">
+        <Label text="Amount:"/>
+        <TextField fx:id="amountField" promptText="Enter amount"/>
+    </HBox>
+
+    <HBox spacing="10">
+        <Label text="Category:"/>
+        <ComboBox fx:id="categoryBox" promptText="Select Category"/>
+    </HBox>
+
+    <HBox spacing="10">
+        <Button text="Add Expense" onAction="#handleAddExpense"/>
+        <Button text="Show Expenses" onAction="#handleShowExpenses"/>
+        <Button text="Back" onAction="#handleBack"/>
+    </HBox>
+
     <ListView fx:id="expenseList"/>
     <PieChart fx:id="expenseChart"/>
+
 </VBox>

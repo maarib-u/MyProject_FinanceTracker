@@ -4,9 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
 import java.io.IOException;
-import java.net.URL;
 
 public class SceneController {
     private final Stage primaryStage;
@@ -15,19 +13,37 @@ public class SceneController {
         this.primaryStage = primaryStage;
     }
 
-    // Switch to an FXML scene by filename
     public void switchToScene(String fxmlFile) {
         try {
-            URL fxmlPath = getClass().getResource("/fxml/" + fxmlFile);
-            if (fxmlPath == null) {
-                throw new IllegalArgumentException("Cannot find FXML file: " + fxmlFile);
-            }
-            Parent root = FXMLLoader.load(fxmlPath);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + fxmlFile));
+            Parent root = loader.load();
             primaryStage.setScene(new Scene(root));
             primaryStage.show();
-        } catch (IOException | IllegalArgumentException e) {
+        } catch (IOException e) {
             e.printStackTrace();
-            System.err.println("Failed to load scene: " + fxmlFile);
+            System.err.println("❌ Failed to load scene: " + fxmlFile);
+        }
+    }
+
+    public void switchToSceneWithUser(String fxmlFile, int userId) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + fxmlFile));
+            Parent root = loader.load();
+            Object controller = loader.getController();
+
+            if (controller instanceof MainController) {
+                ((MainController) controller).setUserId(userId);
+            } else if (controller instanceof ExpenseTrackerController) {
+                ((ExpenseTrackerController) controller).setUserId(userId);
+            } else if (controller instanceof BudgetTrackerController) {
+                ((BudgetTrackerController) controller).setUserId(userId);
+            }
+
+            primaryStage.setScene(new Scene(root));
+            primaryStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("❌ Failed to load scene: " + fxmlFile);
         }
     }
 }

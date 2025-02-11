@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" spacing="15" stylesheets="@styles.css"
+      fx:controller="com.example.financetracker.MainController"
+      xmlns:fx="http://javafx.com/fxml">
+
+    <Label text="Welcome! Choose an option:" styleClass="title"/>
+
+    <Button fx:id="budgetButton" text="Budget Tracker" onAction="#openBudgetTracker"/>
+    <Button fx:id="expenseButton" text="Expense Tracker" onAction="#openExpenseTracker"/>
+    <Button fx:id="currencyButton" text="Currency Converter" onAction="#openCurrencyConverter"/>
+    <Button fx:id="logoutButton" text="Logout" onAction="#handleLogout"/>
+
+</VBox>

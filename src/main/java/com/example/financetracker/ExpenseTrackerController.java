@@ -1,9 +1,9 @@
 package com.example.financetracker;
 
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
+import javafx.collections.FXCollections;
+import javafx.scene.chart.PieChart;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,55 +15,114 @@ public class ExpenseTrackerController {
     @FXML private ListView<String> expenseList;
     @FXML private PieChart expenseChart;
 
-    @FXML
-    public void initialize() {
-        categoryBox.setItems(FXCollections.observableArrayList("Food", "Transport", "Rent", "Miscellaneous"));
+    private int userId;
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+        System.out.println("DEBUG: ExpenseTracker - User ID set to " + userId);
+        loadCategories(); // ✅ Load categories dynamically
         loadExpenses();
+        updateChart();
     }
 
     @FXML
-    private void addExpense() {
-        try (Connection conn = DatabaseManager.getConnection()) {
-            double amount = Double.parseDouble(amountField.getText());
-            String category = categoryBox.getValue();
+    private void handleAddExpense() {
+        String category = categoryBox.getValue();
+        String amountText = amountField.getText();
 
-            if (category == null || category.isEmpty()) {
-                showAlert("Error", "Please select a category!");
-                return;
+        if (category == null || amountText.isEmpty()) {
+            showAlert("❌ Error", "Please enter an amount and select a category.");
+            return;
+        }
+
+        try {
+            double amount = Double.parseDouble(amountText);
+            try (Connection conn = DatabaseManager.getConnection();
+                 PreparedStatement pstmt = conn.prepareStatement(
+                         "INSERT INTO Expenses (user_id, amount, category, date) VALUES (?, ?, ?, GETDATE())")) {
+
+                pstmt.setInt(1, userId);
+                pstmt.setDouble(2, amount);
+                pstmt.setString(3, category);
+                pstmt.executeUpdate();
+
+                showAlert("✅ Success", "Expense added successfully!");
+                loadExpenses();
+                updateChart();
             }
-
-            PreparedStatement pstmt = conn.prepareStatement("INSERT INTO Expenses (amount, category) VALUES (?, ?)");
-            pstmt.setDouble(1, amount);
-            pstmt.setString(2, category);
-            pstmt.executeUpdate();
-
-            showAlert("Success", "Expense added successfully!");
-            loadExpenses();
         } catch (NumberFormatException e) {
-            showAlert("Error", "Please enter a valid amount!");
+            showAlert("❌ Error", "Invalid amount entered.");
         } catch (SQLException e) {
-            showAlert("Error", "Could not save expense!");
+            showAlert("❌ Database Error", "Could not add expense.");
             e.printStackTrace();
         }
     }
 
+    @FXML
+    public void handleShowExpenses() { // ✅ Ensure correct method signature
+        System.out.println("DEBUG: handleShowExpenses triggered.");
+        loadExpenses();
+        updateChart();
+        showAlert("✅ Success", "Expenses updated.");
+    }
+
+    @FXML
+    private void handleBack() {
+        SceneController sceneController = new SceneController(SceneManager.getPrimaryStage());
+        sceneController.switchToSceneWithUser("main.fxml", userId);
+    }
+
     private void loadExpenses() {
         expenseList.getItems().clear();
-        expenseChart.getData().clear();
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(
+                     "SELECT amount, category, date FROM Expenses WHERE user_id = ? ORDER BY date DESC")) {
 
-        try (Connection conn = DatabaseManager.getConnection()) {
-            ResultSet rs = conn.createStatement().executeQuery("SELECT category, SUM(amount) AS total FROM Expenses GROUP BY category");
+            pstmt.setInt(1, userId);
+            ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                String category = rs.getString("category");
-                double total = rs.getDouble("total");
-
-                expenseList.getItems().add(String.format("%s: £%.2f", category, total));
-                expenseChart.getData().add(new PieChart.Data(category, total));
+                String expenseEntry = "£" + rs.getDouble("amount") + " - " + rs.getString("category") + " - " + rs.getString("date");
+                expenseList.getItems().add(expenseEntry);
             }
         } catch (SQLException e) {
-            showAlert("Error", "Failed to load expenses!");
-            e.printStackTrace();
+            showAlert("❌ Error", "Could not fetch expenses.");
+        }
+    }
+
+    private void updateChart() {
+        expenseChart.getData().clear();
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(
+                     "SELECT category, SUM(amount) as total FROM Expenses WHERE user_id = ? GROUP BY category")) {
+
+            pstmt.setInt(1, userId);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                PieChart.Data data = new PieChart.Data(rs.getString("category"), rs.getDouble("total"));
+                expenseChart.getData().add(data);
+            }
+        } catch (SQLException e) {
+            showAlert("❌ Error", "Could not update chart.");
+        }
+    }
+
+    private void loadCategories() { // ✅ Load categories dynamically from DB
+        categoryBox.getItems().clear();
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement("SELECT DISTINCT category FROM Expenses")) {
+
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                categoryBox.getItems().add(rs.getString("category"));
+            }
+
+            if (categoryBox.getItems().isEmpty()) {
+                categoryBox.getItems().addAll("Food", "Transport", "Rent", "Shopping", "Other"); // Default categories
+            }
+        } catch (SQLException e) {
+            showAlert("❌ Error", "Could not load categories.");
         }
     }
 
@@ -71,6 +130,6 @@ public class ExpenseTrackerController {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setContentText(message);
-        alert.showAndWait();
+        alert.show();
     }
 }
