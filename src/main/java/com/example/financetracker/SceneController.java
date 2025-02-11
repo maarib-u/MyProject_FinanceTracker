@@ -31,12 +31,15 @@ public class SceneController {
             Parent root = loader.load();
             Object controller = loader.getController();
 
+            // ✅ Ensure user ID is passed to the correct controller
             if (controller instanceof MainController) {
                 ((MainController) controller).setUserId(userId);
             } else if (controller instanceof ExpenseTrackerController) {
                 ((ExpenseTrackerController) controller).setUserId(userId);
             } else if (controller instanceof BudgetTrackerController) {
                 ((BudgetTrackerController) controller).setUserId(userId);
+            } else if (controller instanceof CurrencyConverterController) { // ✅ Fix for currency converter
+                ((CurrencyConverterController) controller).setUserId(userId);
             }
 
             primaryStage.setScene(new Scene(root));

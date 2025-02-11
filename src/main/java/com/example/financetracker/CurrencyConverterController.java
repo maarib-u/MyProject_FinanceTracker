@@ -18,6 +18,7 @@ public class CurrencyConverterController {
     @FXML private Label resultLabel;
     @FXML private Button convertButton;
     @FXML private Button updateRatesButton;
+    @FXML private Button backButton; // ✅ Add Back button reference
 
     private int userId;
     private final CurrencyConverter currencyConverter = new CurrencyConverter();
@@ -84,6 +85,12 @@ public class CurrencyConverterController {
         } else {
             showAlert("Error", "Failed to update exchange rates.");
         }
+    }
+
+    @FXML
+    private void handleBack() {  // ✅ Back button function
+        SceneController sceneController = new SceneController(SceneManager.getPrimaryStage());
+        sceneController.switchToSceneWithUser("main.fxml", userId);
     }
 
     private void showAlert(String title, String message) {

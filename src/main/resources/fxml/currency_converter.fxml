@@ -28,4 +28,7 @@
 
     <Button text="Update Rates" onAction="#handleUpdateRates"/>
 
+    <!-- ✅ Add Back Button -->
+    <Button text="Back" onAction="#handleBack"/>
+
 </VBox>
