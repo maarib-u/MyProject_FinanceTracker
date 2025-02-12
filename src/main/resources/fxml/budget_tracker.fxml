@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.chart.PieChart?>
+
 <VBox alignment="CENTER" spacing="15" stylesheets="@styles.css"
       fx:controller="com.example.financetracker.BudgetTrackerController"
       xmlns:fx="http://javafx.com/fxml">
@@ -17,6 +19,11 @@
         <Button text="Back" onAction="#handleBack"/>
     </HBox>
 
+    <ProgressBar fx:id="budgetProgressBar" minWidth="300" progress="0.0"/>
     <Label fx:id="budgetStatusLabel" text="Budget Status" styleClass="status-label"/>
 
+    <VBox fx:id="alertBox" spacing="5"/>
+
+    <!-- Ensure the PieChart is large enough for proper label placement -->
+    <PieChart fx:id="budgetChart" minWidth="400" minHeight="400" prefWidth="500" prefHeight="500"/>
 </VBox>

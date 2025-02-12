@@ -3,7 +3,9 @@ package com.example.financetracker;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,7 +22,7 @@ public class ExpenseTrackerController {
     public void setUserId(int userId) {
         this.userId = userId;
         System.out.println("DEBUG: ExpenseTracker - User ID set to " + userId);
-        loadCategories(); // ✅ Load categories dynamically
+        loadCategories();
         loadExpenses();
         updateChart();
     }
@@ -59,7 +61,7 @@ public class ExpenseTrackerController {
     }
 
     @FXML
-    public void handleShowExpenses() { // ✅ Ensure correct method signature
+    public void handleShowExpenses() {
         System.out.println("DEBUG: handleShowExpenses triggered.");
         loadExpenses();
         updateChart();
@@ -99,16 +101,22 @@ public class ExpenseTrackerController {
             pstmt.setInt(1, userId);
             ResultSet rs = pstmt.executeQuery();
 
+            int colorIndex = 0; // Track colors for slices
             while (rs.next()) {
                 PieChart.Data data = new PieChart.Data(rs.getString("category"), rs.getDouble("total"));
                 expenseChart.getData().add(data);
+
+                // Apply Color Manually
+                String colorClass = "default-color" + (colorIndex % 8); // Rotate through 8 colors
+                data.getNode().getStyleClass().add(colorClass);
+                colorIndex++;
             }
         } catch (SQLException e) {
             showAlert("❌ Error", "Could not update chart.");
         }
     }
 
-    private void loadCategories() { // ✅ Load categories dynamically from DB
+    private void loadCategories() {
         categoryBox.getItems().clear();
         try (Connection conn = DatabaseManager.getConnection();
              PreparedStatement pstmt = conn.prepareStatement("SELECT DISTINCT category FROM Expenses")) {
@@ -119,7 +127,7 @@ public class ExpenseTrackerController {
             }
 
             if (categoryBox.getItems().isEmpty()) {
-                categoryBox.getItems().addAll("Food", "Transport", "Rent", "Shopping", "Other"); // Default categories
+                categoryBox.getItems().addAll("Food", "Transport", "Rent", "Shopping", "Other");
             }
         } catch (SQLException e) {
             showAlert("❌ Error", "Could not load categories.");

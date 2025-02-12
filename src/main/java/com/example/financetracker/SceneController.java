@@ -38,7 +38,7 @@ public class SceneController {
                 ((ExpenseTrackerController) controller).setUserId(userId);
             } else if (controller instanceof BudgetTrackerController) {
                 ((BudgetTrackerController) controller).setUserId(userId);
-            } else if (controller instanceof CurrencyConverterController) { // ✅ Fix for currency converter
+            } else if (controller instanceof CurrencyConverterController) {  // ✅ Fix for Currency Converter
                 ((CurrencyConverterController) controller).setUserId(userId);
             }
 
