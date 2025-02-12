@@ -19,11 +19,9 @@
         <Button text="Back" onAction="#handleBack"/>
     </HBox>
 
-    <ProgressBar fx:id="budgetProgressBar" minWidth="300" progress="0.0"/>
     <Label fx:id="budgetStatusLabel" text="Budget Status" styleClass="status-label"/>
 
-    <VBox fx:id="alertBox" spacing="5"/>
+    <!-- ✅ Ensure PieChart is properly referenced -->
+    <PieChart fx:id="budgetChart"/>
 
-    <!-- Ensure the PieChart is large enough for proper label placement -->
-    <PieChart fx:id="budgetChart" minWidth="400" minHeight="400" prefWidth="500" prefHeight="500"/>
 </VBox>
