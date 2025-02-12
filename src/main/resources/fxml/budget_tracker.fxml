@@ -3,25 +3,29 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.chart.PieChart?>
 
-<VBox alignment="CENTER" spacing="15" stylesheets="@styles.css"
+<VBox alignment="CENTER" spacing="20" stylesheets="@styles.css"
       fx:controller="com.example.financetracker.BudgetTrackerController"
       xmlns:fx="http://javafx.com/fxml">
 
+    <!-- Title Section -->
     <Label text="Budget Tracker" styleClass="title"/>
 
+    <!-- Monthly Budget Input Section -->
     <HBox spacing="10">
-        <Label text="Monthly Budget:"/>
-        <TextField fx:id="budgetField" promptText="Enter budget"/>
+        <Label text="Enter Monthly Budget:"/>
+        <TextField fx:id="budgetField" promptText="Enter budget" />
     </HBox>
 
-    <HBox spacing="10">
+    <!-- Budget Action Buttons -->
+    <HBox spacing="20">
         <Button text="Set Budget" onAction="#handleSetBudget"/>
         <Button text="Back" onAction="#handleBack"/>
     </HBox>
 
+    <!-- Status Label to display budget load success or error -->
     <Label fx:id="budgetStatusLabel" text="Budget Status" styleClass="status-label"/>
 
-    <!-- ✅ Ensure PieChart is properly referenced -->
-    <PieChart fx:id="budgetChart"/>
+    <!-- Pie Chart to show budget progress -->
+    <PieChart fx:id="budgetChart" prefWidth="600" prefHeight="400" />
 
 </VBox>
