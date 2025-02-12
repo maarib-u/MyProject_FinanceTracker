@@ -10,8 +10,8 @@ module com.example.financetracker {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires java.sql;
-    requires json; // Required for `org.json`
     requires java.net.http;
+    requires org.json;
     requires jbcrypt; // For URL and network connections
 
 
