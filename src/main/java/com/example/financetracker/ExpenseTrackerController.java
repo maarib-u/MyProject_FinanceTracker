@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 
 public class ExpenseTrackerController {
     @FXML private TextField amountField;
@@ -95,9 +96,18 @@ public class ExpenseTrackerController {
             return;
         }
 
-        // Remove the selected category from the ComboBox
-        categoryBox.getItems().remove(selectedCategory);
-        showAlert("✅ Success", "Category deleted: " + selectedCategory);
+        // Confirm deletion with the user
+        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationAlert.setTitle("Confirm Deletion");
+        confirmationAlert.setHeaderText("Are you sure you want to delete the category: " + selectedCategory + "?");
+        confirmationAlert.setContentText("This action cannot be undone.");
+        Optional<ButtonType> result = confirmationAlert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            // Remove the selected category from the ComboBox
+            categoryBox.getItems().remove(selectedCategory);
+            showAlert("✅ Success", "Category deleted: " + selectedCategory);
+        }
     }
 
     private void loadExpenses() {
