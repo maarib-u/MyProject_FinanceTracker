@@ -2,33 +2,42 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<!-- Root container: VBox for layout -->
 <VBox alignment="CENTER" spacing="15" stylesheets="@styles.css"
       fx:controller="com.example.financetracker.CurrencyConverterController"
       xmlns:fx="http://javafx.com/fxml">
 
+    <!-- Title Section: Displays the page title -->
     <Label text="Currency Converter" styleClass="title"/>
 
+    <!-- From Currency Section: Allows user to select the 'from' currency -->
     <HBox spacing="10">
         <Label text="From:"/>
-        <ComboBox fx:id="fromCurrencyBox"/>
+        <ComboBox fx:id="fromCurrencyBox" editable="true"/>
     </HBox>
 
+    <!-- To Currency Section: Allows user to select the 'to' currency -->
     <HBox spacing="10">
         <Label text="To:"/>
-        <ComboBox fx:id="toCurrencyBox"/>
+        <ComboBox fx:id="toCurrencyBox" editable="true"/>
     </HBox>
 
+    <!-- Amount Input Section: User enters the amount to convert -->
     <HBox spacing="10">
         <Label text="Amount:"/>
         <TextField fx:id="amountField" promptText="Enter amount"/>
     </HBox>
 
+    <!-- Convert Button: Triggers the currency conversion process -->
     <Button text="Convert" onAction="#handleConvert"/>
+
+    <!-- Result Label: Displays the converted amount -->
     <Label fx:id="resultLabel" text="Converted Amount: 0.00"/>
 
+    <!-- Update Rates Button: Refreshes the exchange rates from the API -->
     <Button text="Update Rates" onAction="#handleUpdateRates"/>
 
-    <!-- ✅ Add Back Button -->
+    <!-- Back Button: Navigates back to the previous screen -->
     <Button text="Back" onAction="#handleBack"/>
 
 </VBox>

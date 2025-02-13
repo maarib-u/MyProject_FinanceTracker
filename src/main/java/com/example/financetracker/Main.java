@@ -7,18 +7,22 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        // Save the primary stage in SceneManager
+        // save the primary stage (main window) in SceneManager for later use
         SceneManager.setPrimaryStage(primaryStage);
 
-        // Initialize and show the login screen
+        // initialize the scene controller and switch to the login screen
         SceneController sceneController = new SceneController(primaryStage);
         sceneController.switchToScene("login.fxml");
 
+        // set the title of the main window (primary stage)
         primaryStage.setTitle("Finance Tracker");
+
+        // show the primary stage (main window)
         primaryStage.show();
     }
 
+    // main method to launch the application
     public static void main(String[] args) {
-        launch(args);
+        launch(args);  // launch the JavaFX application
     }
 }
