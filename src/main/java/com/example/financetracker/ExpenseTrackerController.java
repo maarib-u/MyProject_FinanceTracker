@@ -20,6 +20,7 @@ public class ExpenseTrackerController {
     @FXML private TextField customCategoryField;  // Text field for adding a custom category
     @FXML private Button addCategoryButton;  // Button to add custom category
     @FXML private Button deleteCategoryButton;  // Button to delete custom category
+    @FXML private Button deleteExpenseButton;  // Button to delete selected expense
 
     private int userId;
 
@@ -65,6 +66,52 @@ public class ExpenseTrackerController {
     }
 
     @FXML
+    private void handleDeleteExpense() {
+        String selectedExpense = expenseList.getSelectionModel().getSelectedItem();
+
+        if (selectedExpense == null) {
+            showAlert("❌ Error", "Please select an expense to delete.");
+            return;
+        }
+
+        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationAlert.setTitle("Confirm Deletion");
+        confirmationAlert.setHeaderText("Are you sure you want to delete the expense?");
+        confirmationAlert.setContentText("This action cannot be undone.");
+        Optional<ButtonType> result = confirmationAlert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try (Connection conn = DatabaseManager.getConnection();
+                 PreparedStatement pstmt = conn.prepareStatement(
+                         "DELETE FROM Expenses WHERE user_id = ? AND amount = ? AND category = ? AND date = ?")) {
+
+                String[] expenseDetails = selectedExpense.split(" - ");
+                double amount = Double.parseDouble(expenseDetails[0].replace("£", ""));
+                String category = expenseDetails[1];
+                String date = expenseDetails[2];
+
+                pstmt.setInt(1, userId);
+                pstmt.setDouble(2, amount);
+                pstmt.setString(3, category);
+                pstmt.setString(4, date);
+
+                int rowsAffected = pstmt.executeUpdate();
+
+                if (rowsAffected > 0) {
+                    showAlert("✅ Success", "Expense deleted successfully!");
+                    loadExpenses();
+                    updateChart();
+                } else {
+                    showAlert("❌ Error", "Could not delete expense.");
+                }
+            } catch (SQLException e) {
+                showAlert("❌ Error", "Failed to delete expense.");
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @FXML
     private void handleBack() {
         SceneController sceneController = new SceneController(SceneManager.getPrimaryStage());
         sceneController.switchToSceneWithUser("main.fxml", userId);
@@ -74,13 +121,25 @@ public class ExpenseTrackerController {
     private void handleAddCustomCategory() {
         String customCategory = customCategoryField.getText().trim();
 
-        // Validate custom category input
         if (customCategory.isEmpty()) {
             showAlert("❌ Error", "Please enter a valid category.");
             return;
         }
 
-        // Add the new category to the ComboBox and clear the input field
+        // Save custom category to the database
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(
+                     "INSERT INTO UserCategories (user_id, category_name) VALUES (?, ?)")) {
+            pstmt.setInt(1, userId);
+            pstmt.setString(2, customCategory);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            showAlert("❌ Error", "Could not save custom category.");
+            e.printStackTrace();
+            return;
+        }
+
+        // Add the custom category to the ComboBox
         categoryBox.getItems().add(customCategory);
         customCategoryField.clear();
         showAlert("✅ Success", "Custom category added: " + customCategory);
@@ -90,23 +149,36 @@ public class ExpenseTrackerController {
     private void handleDeleteCustomCategory() {
         String selectedCategory = categoryBox.getValue();
 
-        // Check if a custom category is selected
         if (selectedCategory == null || !categoryBox.getItems().contains(selectedCategory)) {
             showAlert("❌ Error", "Please select a category to delete.");
             return;
         }
 
-        // Confirm deletion with the user
         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmationAlert.setTitle("Confirm Deletion");
-        confirmationAlert.setHeaderText("Are you sure you want to delete the category: " + selectedCategory + "?");
+        confirmationAlert.setHeaderText("Are you sure you want to delete this custom category?");
         confirmationAlert.setContentText("This action cannot be undone.");
         Optional<ButtonType> result = confirmationAlert.showAndWait();
 
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            // Remove the selected category from the ComboBox
-            categoryBox.getItems().remove(selectedCategory);
-            showAlert("✅ Success", "Category deleted: " + selectedCategory);
+            try (Connection conn = DatabaseManager.getConnection();
+                 PreparedStatement pstmt = conn.prepareStatement(
+                         "DELETE FROM UserCategories WHERE category_name = ? AND user_id = ?")) {
+
+                pstmt.setString(1, selectedCategory);
+                pstmt.setInt(2, userId);
+                int rowsAffected = pstmt.executeUpdate();
+
+                if (rowsAffected > 0) {
+                    categoryBox.getItems().remove(selectedCategory);  // Remove from ComboBox
+                    showAlert("✅ Success", "Category deleted: " + selectedCategory);
+                } else {
+                    showAlert("❌ Error", "Could not delete category.");
+                }
+            } catch (SQLException e) {
+                showAlert("❌ Error", "Failed to delete category from the database.");
+                e.printStackTrace();
+            }
         }
     }
 
@@ -137,13 +209,12 @@ public class ExpenseTrackerController {
             pstmt.setInt(1, userId);
             ResultSet rs = pstmt.executeQuery();
 
-            int colorIndex = 0; // Track colors for slices
+            int colorIndex = 0;
             while (rs.next()) {
                 PieChart.Data data = new PieChart.Data(rs.getString("category"), rs.getDouble("total"));
                 expenseChart.getData().add(data);
 
-                // Apply color manually
-                String colorClass = "default-color" + (colorIndex % 8); // Rotate through 8 colors
+                String colorClass = "default-color" + (colorIndex % 8);
                 data.getNode().getStyleClass().add(colorClass);
                 colorIndex++;
             }
@@ -155,14 +226,14 @@ public class ExpenseTrackerController {
     private void loadCategories() {
         categoryBox.getItems().clear();
         try (Connection conn = DatabaseManager.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement("SELECT DISTINCT category FROM Expenses")) {
+             PreparedStatement pstmt = conn.prepareStatement("SELECT category_name FROM UserCategories WHERE user_id = ?")) {
 
+            pstmt.setInt(1, userId);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                categoryBox.getItems().add(rs.getString("category"));
+                categoryBox.getItems().add(rs.getString("category_name"));
             }
 
-            // If no categories are available, load default ones
             if (categoryBox.getItems().isEmpty()) {
                 categoryBox.getItems().addAll("Food", "Transport", "Rent", "Shopping", "Other");
             }
