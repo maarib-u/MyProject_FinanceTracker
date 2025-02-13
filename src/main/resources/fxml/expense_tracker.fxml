@@ -14,14 +14,12 @@
         <TextField fx:id="amountField" promptText="Enter amount"/>
     </HBox>
 
-    <!-- Category selection with Delete Category button -->
     <HBox spacing="10">
         <Label text="Category:"/>
         <ComboBox fx:id="categoryBox" promptText="Select Category"/>
         <Button text="Delete Category" onAction="#handleDeleteCustomCategory"/>
     </HBox>
 
-    <!-- Custom category input for adding categories, not in the dropdown -->
     <HBox spacing="10">
         <Label text="Custom Category:"/>
         <TextField fx:id="customCategoryField" promptText="Enter a new category"/>
@@ -31,10 +29,15 @@
     <HBox spacing="10">
         <Button text="Add Expense" onAction="#handleAddExpense"/>
         <Button text="Delete Expense" onAction="#handleDeleteExpense"/>
+    </HBox>
+
+    <HBox spacing="10">
         <Button text="Back" onAction="#handleBack"/>
     </HBox>
 
-    <!-- ListView for expenses -->
+    <!-- Display Total Expenses -->
+    <Label fx:id="totalAmountLabel" text="Total Expenses: £0.00"/>
+
     <ListView fx:id="expenseList"/>
 
     <!-- PieChart for expenses -->

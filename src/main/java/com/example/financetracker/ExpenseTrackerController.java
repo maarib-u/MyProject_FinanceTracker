@@ -21,6 +21,7 @@ public class ExpenseTrackerController {
     @FXML private Button addCategoryButton;  // Button to add custom category
     @FXML private Button deleteCategoryButton;  // Button to delete custom category
     @FXML private Button deleteExpenseButton;  // Button to delete selected expense
+    @FXML private Label totalAmountLabel; // Label to show total expenses
 
     private int userId;
 
@@ -209,15 +210,23 @@ public class ExpenseTrackerController {
             pstmt.setInt(1, userId);
             ResultSet rs = pstmt.executeQuery();
 
-            int colorIndex = 0;
+            double totalExpenses = 0;  // Variable to hold total expenses
+
             while (rs.next()) {
-                PieChart.Data data = new PieChart.Data(rs.getString("category"), rs.getDouble("total"));
+                String category = rs.getString("category");
+                double totalAmount = rs.getDouble("total");
+                totalExpenses += totalAmount;
+
+                PieChart.Data data = new PieChart.Data(category, totalAmount);
                 expenseChart.getData().add(data);
 
-                String colorClass = "default-color" + (colorIndex % 8);
-                data.getNode().getStyleClass().add(colorClass);
-                colorIndex++;
+                // Label each slice with the amount and percentage
+                double percentage = (totalAmount / totalExpenses) * 100;
+                data.setName(String.format("%s - £%.2f (%.2f%%)", category, totalAmount, percentage));
             }
+
+            // Display total expenses
+            totalAmountLabel.setText("Total Expenses: £" + totalExpenses);
         } catch (SQLException e) {
             showAlert("❌ Error", "Could not update chart.");
         }
