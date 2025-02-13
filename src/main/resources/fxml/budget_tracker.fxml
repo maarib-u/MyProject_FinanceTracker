@@ -1,31 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.ProgressBar?>
 
 <VBox alignment="CENTER" spacing="20" stylesheets="@styles.css"
       fx:controller="com.example.financetracker.BudgetTrackerController"
       xmlns:fx="http://javafx.com/fxml">
 
-    <!-- Title Section -->
     <Label text="Budget Tracker" styleClass="title"/>
 
-    <!-- Monthly Budget Input Section -->
     <HBox spacing="10">
         <Label text="Enter Monthly Budget:"/>
-        <TextField fx:id="budgetField" promptText="Enter budget" />
+        <TextField fx:id="budgetField" promptText="Enter budget"/>
     </HBox>
 
-    <!-- Budget Action Buttons -->
     <HBox spacing="20">
         <Button text="Set Budget" onAction="#handleSetBudget"/>
         <Button text="Back" onAction="#handleBack"/>
     </HBox>
 
-    <!-- Display monthly budget -->
     <Label fx:id="budgetStatusLabel" text="Monthly Budget: £0.00" styleClass="status-label"/>
 
-    <!-- Pie Chart to show budget progress -->
-    <PieChart fx:id="budgetChart" prefWidth="600" prefHeight="400" />
+    <!-- Budget progress bar and its percentage -->
+    <Label text="Budget Progress:"/>
+    <ProgressBar fx:id="budgetProgressBar" prefWidth="300"/>
+    <Label fx:id="progressLabel" text="Progress: £0.00 / £0.00 (0%)"/>
+
+    <!-- Insight label for budget warnings -->
+    <Label fx:id="insightLabel" text="" styleClass="warning-label"/>
 
 </VBox>

@@ -57,44 +57,48 @@ Button:pressed {
     -fx-translate-y: 2px;
 }
 
-/* listview styling */
-ListView {
-    -fx-border-color: #bdc3c7;
-    -fx-background-color: white;
-    -fx-border-radius: 5px;
-    -fx-padding: 5px;
+/* progress bar styling */
+.progress-bar {
+    -fx-background-color: #dfe6e9;
 }
 
-/* combobox styling */
-ComboBox {
-    -fx-pref-width: 260px;
-    -fx-font-size: 14px;
-    -fx-padding: 6px;
+.progress-bar .bar {
+    -fx-background-color: linear-gradient(to right, #3498db, #1abc9c);
 }
 
-/* alert popup styling */
-.alert {
-    -fx-font-size: 14px;
+/* styling for the progress bar when approaching or exceeding the budget */
+.progress-bar.exceeded .bar {
+    -fx-background-color: linear-gradient(to right, #e74c3c, #d92411);
 }
 
-/* navbar styling */
-.navbar {
-    -fx-background-color: #2C3E50;
-    -fx-padding: 12px;
+.progress-bar.approaching .bar {
+    -fx-background-color: linear-gradient(to right, #f1c40f, #f39c12);
 }
 
-.navbar Button {
-    -fx-background-color: #34495e;
-    -fx-text-fill: white;
-    -fx-padding: 12px;
+.progress-bar.warning .bar {
+    -fx-background-color: linear-gradient(to right, #f39c12, #e74c3c);
+}
+/* insight label for warnings */
+.warning-label {
+    -fx-text-fill: red;
+    -fx-font-weight: bold;
     -fx-font-size: 14px;
 }
 
-.navbar Button:hover {
-    -fx-background-color: #1abc9c;
+/* status label styling for budget */
+.status-label {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2C3E50;
 }
 
-/* budget piechart color styling */
+/* Label for progress, showing the budget status */
+#progressLabel {
+    -fx-font-size: 14px;
+    -fx-text-fill: #2C3E50;
+}
+
+/* styling for the piechart */
 .chart {
     -fx-background-color: white;
 }
@@ -120,63 +124,4 @@ ComboBox {
     -fx-background-color: white;
     -fx-border-color: #bdc3c7;
     -fx-border-radius: 5px;
-}
-
-/* progress bar for budget tracking */
-.progress-bar {
-    -fx-background-color: #dfe6e9;
-}
-
-.progress-bar .bar {
-    -fx-background-color: linear-gradient(to right, #3498db, #1abc9c);
-}
-
-/* tableview styling */
-.table-view {
-    -fx-background-color: white;
-    -fx-border-color: #bdc3c7;
-    -fx-border-radius: 5px;
-    -fx-padding: 5px;
-}
-
-.table-row-cell {
-    -fx-background-color: white;
-}
-
-.table-row-cell:odd {
-    -fx-background-color: #ecf0f1;
-}
-
-/* scrollpane styling */
-.scroll-pane {
-    -fx-background-color: transparent;
-}
-
-.scroll-bar {
-    -fx-background-color: #bdc3c7;
-}
-
-/* button grouping */
-.hbox {
-    -fx-spacing: 12;
-    -fx-alignment: center;
-}
-
-/* error message styling */
-.error-label {
-    -fx-text-fill: #e74c3c;
-    -fx-font-weight: bold;
-    -fx-font-size: 14px;
-}
-
-/* success message styling */
-.success-label {
-    -fx-text-fill: #2ecc71;
-    -fx-font-weight: bold;
-    -fx-font-size: 14px;
-}
-
-/* budget piechart section */
-#budgetChart {
-    -fx-background-color: white;
 }
