@@ -3,34 +3,41 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.chart.PieChart?>
 
+<!-- Layout for the Expense Tracker screen -->
 <VBox alignment="CENTER" spacing="15" stylesheets="@styles.css"
       fx:controller="com.example.financetracker.ExpenseTrackerController"
       xmlns:fx="http://javafx.com/fxml">
 
+    <!-- Title label displaying 'Expense Tracker' -->
     <Label text="Expense Tracker" styleClass="title"/>
 
+    <!-- Amount input field and label -->
     <HBox spacing="10">
         <Label text="Amount:"/>
         <TextField fx:id="amountField" promptText="Enter amount"/>
     </HBox>
 
+    <!-- Category selection field with delete option -->
     <HBox spacing="10">
         <Label text="Category:"/>
         <ComboBox fx:id="categoryBox" promptText="Select Category"/>
-        <Button text="Delete Category" onAction="#handleDeleteCustomCategory"/>
+        <Button text="Delete Category" onAction="#handleDeleteCustomCategory"/> <!-- Button to delete custom category -->
     </HBox>
 
+    <!-- Custom category input field with add button -->
     <HBox spacing="10">
         <Label text="Custom Category:"/>
         <TextField fx:id="customCategoryField" promptText="Enter a new category"/>
-        <Button text="Add Custom Category" onAction="#handleAddCustomCategory"/>
+        <Button text="Add Custom Category" onAction="#handleAddCustomCategory"/> <!-- Button to add custom category -->
     </HBox>
 
+    <!-- Buttons for adding expense and deleting selected expense -->
     <HBox spacing="10">
         <Button text="Add Expense" onAction="#handleAddExpense"/>
         <Button text="Delete Expense" onAction="#handleDeleteExpense"/>
     </HBox>
 
+    <!-- Button to go back to the previous screen -->
     <HBox spacing="10">
         <Button text="Back" onAction="#handleBack"/>
     </HBox>
@@ -38,8 +45,10 @@
     <!-- Display Total Expenses -->
     <Label fx:id="totalAmountLabel" text="Total Expenses: £0.00"/>
 
+    <!-- List view to display all expenses -->
     <ListView fx:id="expenseList"/>
 
-    <!-- PieChart for expenses -->
+    <!-- PieChart to display expenses breakdown -->
     <PieChart fx:id="expenseChart" prefWidth="400" prefHeight="400"/>
+
 </VBox>

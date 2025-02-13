@@ -2,18 +2,26 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<!-- Layout for the login screen -->
 <VBox alignment="CENTER" spacing="15" stylesheets="@styles.css"
       fx:controller="com.example.financetracker.LoginController"
       xmlns:fx="http://javafx.com/fxml">
 
+    <!-- Title label displaying 'Finance Tracker' -->
     <Label text="Finance Tracker" styleClass="title"/>
 
+    <!-- Username field label and input box -->
     <Label text="Username:"/>
     <TextField fx:id="usernameField" promptText="Enter username"/>
 
+    <!-- Password field label and input box -->
     <Label text="Password:"/>
     <PasswordField fx:id="passwordField" promptText="Enter password"/>
 
+    <!-- Button to log the user in -->
     <Button text="Login" onAction="#handleLogin"/>
+
+    <!-- Button to register a new user -->
     <Button text="Register" onAction="#handleRegister"/>
+
 </VBox>
