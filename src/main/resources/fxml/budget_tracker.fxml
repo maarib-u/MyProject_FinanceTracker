@@ -22,8 +22,8 @@
         <Button text="Back" onAction="#handleBack"/>
     </HBox>
 
-    <!-- Status Label to display budget load success or error -->
-    <Label fx:id="budgetStatusLabel" text="Budget Status" styleClass="status-label"/>
+    <!-- Display monthly budget -->
+    <Label fx:id="budgetStatusLabel" text="Monthly Budget: £0.00" styleClass="status-label"/>
 
     <!-- Pie Chart to show budget progress -->
     <PieChart fx:id="budgetChart" prefWidth="600" prefHeight="400" />

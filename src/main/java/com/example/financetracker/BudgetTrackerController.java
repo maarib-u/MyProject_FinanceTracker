@@ -17,22 +17,19 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 public class BudgetTrackerController {
-    // fields to hold UI components
     @FXML private TextField budgetField;  // budget input field
     @FXML private Label budgetStatusLabel; // label showing budget status
-    @FXML private PieChart budgetChart;  // pie chart for visualising budget data
+    @FXML private PieChart budgetChart;  // pie chart for visualizing budget data
 
     private int userId;  // stores the user id
 
-    // sets the user id, loads budget and updates the chart
     public void setUserId(int userId) {
         this.userId = userId;
         System.out.println("Debug: user id set to " + userId);
-        loadBudget();
-        updateChart();
+        loadBudget();  // load budget
+        updateChart();  // update pie chart with expenses
     }
 
-    // sets up the tooltip for the budget field
     @FXML
     public void initialize() {
         System.out.println("Debug: controller initialized.");
@@ -42,12 +39,10 @@ public class BudgetTrackerController {
         budgetField.setTooltip(tooltip);
     }
 
-    // handles setting the budget when user clicks "set budget"
     @FXML
     private void handleSetBudget() {
         String budgetText = budgetField.getText();  // get text from the field
 
-        // check if input is empty or invalid
         if (budgetText.isEmpty() || !isValidBudget(budgetText)) {
             showAlert("❌ Error", "Please enter a valid budget amount.");
             return;
@@ -55,7 +50,6 @@ public class BudgetTrackerController {
 
         double budget = Double.parseDouble(budgetText);  // convert text to number
 
-        // check if budget is positive
         if (budget <= 0) {
             showAlert("❌ Error", "Budget must be a positive value.");
             return;
@@ -68,7 +62,6 @@ public class BudgetTrackerController {
         confirmationAlert.setContentText("Your new budget will be set to: £" + budget);
         Optional<ButtonType> result = confirmationAlert.showAndWait();  // wait for response
 
-        // if confirmed, update the budget
         if (result.isPresent() && result.get() == ButtonType.OK) {
             try (Connection conn = DatabaseManager.getConnection()) {
                 PreparedStatement pstmt = conn.prepareStatement(
@@ -92,19 +85,17 @@ public class BudgetTrackerController {
         }
     }
 
-    // loads the current budget from the database
     private void loadBudget() {
         try (Connection conn = DatabaseManager.getConnection()) {
             PreparedStatement pstmt = conn.prepareStatement("SELECT monthly_budget FROM Budgets WHERE user_id = ?");
             pstmt.setInt(1, userId);  // set user id in the query
             ResultSet rs = pstmt.executeQuery();  // execute the query
 
-            // if budget exists, show it in the field and label
             if (rs.next()) {
-                budgetField.setText(String.valueOf(rs.getDouble("monthly_budget")));
-                budgetStatusLabel.setText("✅ Budget loaded successfully.");
+                double budget = rs.getDouble("monthly_budget");  // get the budget from the database
+                budgetField.setText(String.valueOf(budget));  // display the budget in the input field
+                budgetStatusLabel.setText("Monthly Budget: £" + budget);  // display the budget in the label
             } else {
-                // if no budget set, clear field and show warning
                 budgetField.setText("");
                 budgetStatusLabel.setText("⚠️ No budget set.");
             }
@@ -114,7 +105,6 @@ public class BudgetTrackerController {
         }
     }
 
-    // updates the pie chart based on the current budget and expenses
     private void updateChart() {
         budgetChart.getData().clear();  // clear previous chart data
 
@@ -132,22 +122,18 @@ public class BudgetTrackerController {
             double totalBudget = Double.parseDouble(budgetField.getText());  // get budget from field
 
             if (totalBudget > 0) {
-                // calculate remaining budget and percentages
                 double remaining = totalBudget - totalSpent;
                 double spentPercentage = (totalSpent / totalBudget) * 100;
                 double remainingPercentage = (remaining / totalBudget) * 100;
 
-                // create PieChart data for spent and remaining budget
                 PieChart.Data spentData = new PieChart.Data("Spent: £" + totalSpent + " (" + String.format("%.2f", spentPercentage) + "%)", totalSpent);
                 PieChart.Data remainingData = new PieChart.Data("Remaining: £" + remaining + " (" + String.format("%.2f", remainingPercentage) + "%)", remaining);
 
-                budgetChart.getData().addAll(spentData, remainingData);  // add data to chart
+                budgetChart.getData().addAll(spentData, remainingData);
 
-                // set chart slice colours
                 spentData.getNode().setStyle("-fx-pie-color: #e74c3c;");
                 remainingData.getNode().setStyle("-fx-pie-color: #2ecc71;");
 
-                // tooltips for chart slices on hover
                 final String spentTooltipText = "Spent: £" + totalSpent + " (" + String.format("%.2f", spentPercentage) + "%)";
                 final String remainingTooltipText = "Remaining: £" + remaining + " (" + String.format("%.2f", remainingPercentage) + "%)";
 
@@ -160,7 +146,6 @@ public class BudgetTrackerController {
                     Tooltip.install(remainingData.getNode(), tooltip);  // attach tooltip to slice
                 });
 
-                // add smooth animation to PieChart after update
                 PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
                 pause.setOnFinished(event -> budgetChart.layout());  // refresh chart layout
                 pause.play();
@@ -175,14 +160,12 @@ public class BudgetTrackerController {
         budgetChart.layout();  // refresh chart layout
     }
 
-    // handle the back button to return to main scene
     @FXML
     private void handleBack() {
         SceneController sceneController = new SceneController(SceneManager.getPrimaryStage());
         sceneController.switchToSceneWithUser("main.fxml", userId);  // switch to main scene
     }
 
-    // shows an alert to the user
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);  // set the title of the alert
@@ -194,7 +177,6 @@ public class BudgetTrackerController {
         alert.showAndWait();  // show alert and wait for user action
     }
 
-    // check if the budget input is a valid number
     private boolean isValidBudget(String budgetText) {
         try {
             Double.parseDouble(budgetText);  // try to convert text to number

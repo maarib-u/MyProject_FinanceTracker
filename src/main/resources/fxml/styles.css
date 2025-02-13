@@ -1,30 +1,30 @@
-/* ✅ Global Styling */
+/* global styling for the whole app */
 .root {
     -fx-font-family: "Arial";
     -fx-background-color: #f4f4f4;
 }
 
-/* ✅ Titles and Headings */
+/* title and heading styling */
 .title {
     -fx-font-size: 24px;
     -fx-font-weight: bold;
     -fx-text-fill: #2C3E50;
 }
 
-/* ✅ VBox Styling */
+/* vbox layout styling */
 VBox {
     -fx-padding: 20;
     -fx-alignment: center;
     -fx-spacing: 15;
 }
 
-/* ✅ Label Styling */
+/* styling for labels */
 Label {
     -fx-font-size: 16px;
     -fx-text-fill: #2C3E50;
 }
 
-/* ✅ TextFields and PasswordFields */
+/* styling for textfields and passwordfields */
 TextField, PasswordField {
     -fx-pref-width: 260px;
     -fx-font-size: 14px;
@@ -35,7 +35,7 @@ TextField, PasswordField {
     -fx-background-color: white;
 }
 
-/* ✅ Buttons */
+/* button styling */
 Button {
     -fx-background-color: #3498db;
     -fx-text-fill: white;
@@ -57,7 +57,7 @@ Button:pressed {
     -fx-translate-y: 2px;
 }
 
-/* ✅ ListView Styling */
+/* listview styling */
 ListView {
     -fx-border-color: #bdc3c7;
     -fx-background-color: white;
@@ -65,19 +65,19 @@ ListView {
     -fx-padding: 5px;
 }
 
-/* ✅ ComboBox Styling */
+/* combobox styling */
 ComboBox {
     -fx-pref-width: 260px;
     -fx-font-size: 14px;
     -fx-padding: 6px;
 }
 
-/* ✅ Alerts & Popups */
+/* alert popup styling */
 .alert {
     -fx-font-size: 14px;
 }
 
-/* ✅ Navigation Bar */
+/* navbar styling */
 .navbar {
     -fx-background-color: #2C3E50;
     -fx-padding: 12px;
@@ -94,20 +94,20 @@ ComboBox {
     -fx-background-color: #1abc9c;
 }
 
-/* ✅ Budget PieChart Colors */
+/* budget piechart color styling */
 .chart {
     -fx-background-color: white;
 }
 
-/* ✅ PieChart Slices */
-.default-color0.chart-pie { -fx-pie-color: #e74c3c; } /* Red (Spent) */
-.default-color1.chart-pie { -fx-pie-color: #2ecc71; } /* Green (Remaining) */
-.default-color2.chart-pie { -fx-pie-color: #ff9f43; } /* Orange */
-.default-color3.chart-pie { -fx-pie-color: #54a0ff; } /* Blue */
-.default-color4.chart-pie { -fx-pie-color: #f368e0; } /* Pink */
-.default-color5.chart-pie { -fx-pie-color: #222f3e; } /* Dark Gray */
+/* piechart slice colors */
+.default-color0.chart-pie { -fx-pie-color: #e74c3c; } /* red (spent) */
+.default-color1.chart-pie { -fx-pie-color: #2ecc71; } /* green (remaining) */
+.default-color2.chart-pie { -fx-pie-color: #ff9f43; } /* orange */
+.default-color3.chart-pie { -fx-pie-color: #54a0ff; } /* blue */
+.default-color4.chart-pie { -fx-pie-color: #f368e0; } /* pink */
+.default-color5.chart-pie { -fx-pie-color: #222f3e; } /* dark grey */
 
-/* ✅ PieChart Labels */
+/* piechart labels styling */
 .chart-pie-label {
     -fx-text-fill: black !important;
     -fx-font-weight: bold;
@@ -115,14 +115,14 @@ ComboBox {
     -fx-effect: dropshadow(gaussian, white, 2, 0.5, 0, 0);
 }
 
-/* ✅ Ensure PieChart Border is Visible */
+/* piechart border visibility */
 .chart-content {
     -fx-background-color: white;
     -fx-border-color: #bdc3c7;
     -fx-border-radius: 5px;
 }
 
-/* ✅ Progress Bar (For Budget Tracking) */
+/* progress bar for budget tracking */
 .progress-bar {
     -fx-background-color: #dfe6e9;
 }
@@ -131,7 +131,7 @@ ComboBox {
     -fx-background-color: linear-gradient(to right, #3498db, #1abc9c);
 }
 
-/* ✅ TableView Styling */
+/* tableview styling */
 .table-view {
     -fx-background-color: white;
     -fx-border-color: #bdc3c7;
@@ -147,7 +147,7 @@ ComboBox {
     -fx-background-color: #ecf0f1;
 }
 
-/* ✅ ScrollPane Styling */
+/* scrollpane styling */
 .scroll-pane {
     -fx-background-color: transparent;
 }
@@ -156,27 +156,27 @@ ComboBox {
     -fx-background-color: #bdc3c7;
 }
 
-/* ✅ Button Grouping */
+/* button grouping */
 .hbox {
     -fx-spacing: 12;
     -fx-alignment: center;
 }
 
-/* ✅ Error Message Styling */
+/* error message styling */
 .error-label {
     -fx-text-fill: #e74c3c;
     -fx-font-weight: bold;
     -fx-font-size: 14px;
 }
 
-/* ✅ Success Message Styling */
+/* success message styling */
 .success-label {
     -fx-text-fill: #2ecc71;
     -fx-font-weight: bold;
     -fx-font-size: 14px;
 }
 
-/* ✅ Budget Pie Chart */
+/* budget piechart section */
 #budgetChart {
     -fx-background-color: white;
 }
