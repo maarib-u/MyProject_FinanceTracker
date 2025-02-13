@@ -25,8 +25,8 @@ public class CurrencyConverterController {
         setupComboBoxListeners(); // setup listeners to handle filtering and resetting the ComboBox
 
         // set prompt text to guide the user to select a currency
-        fromCurrencyBox.setPromptText("choose currency");
-        toCurrencyBox.setPromptText("choose currency");
+        fromCurrencyBox.setPromptText("Choose currency");
+        toCurrencyBox.setPromptText("Choose currency");
     }
 
     // set the user ID for this scene

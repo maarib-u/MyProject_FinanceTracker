@@ -19,15 +19,25 @@
         <ComboBox fx:id="categoryBox" promptText="Select Category"/>
     </HBox>
 
+    <!-- Custom category input -->
+    <HBox spacing="10">
+        <Label text="Custom Category:"/>
+        <TextField fx:id="customCategoryField" promptText="Enter a new category"/>
+        <Button text="Add Custom Category" onAction="#handleAddCustomCategory"/>
+    </HBox>
+
+    <!-- Button to delete category -->
+    <HBox spacing="10">
+        <Button text="Delete Category" onAction="#handleDeleteCustomCategory"/>
+    </HBox>
+
     <HBox spacing="10">
         <Button text="Add Expense" onAction="#handleAddExpense"/>
-        <Button text="Show Expenses" onAction="#handleShowExpenses"/>
         <Button text="Back" onAction="#handleBack"/>
     </HBox>
 
     <ListView fx:id="expenseList"/>
 
-    <!-- ✅ Ensure PieChart is properly referenced -->
+    <!-- PieChart for expenses -->
     <PieChart fx:id="expenseChart" prefWidth="400" prefHeight="400"/>
-
 </VBox>

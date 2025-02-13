@@ -16,6 +16,9 @@ public class ExpenseTrackerController {
     @FXML private ComboBox<String> categoryBox;
     @FXML private ListView<String> expenseList;
     @FXML private PieChart expenseChart;
+    @FXML private TextField customCategoryField;  // Text field for adding a custom category
+    @FXML private Button addCategoryButton;  // Button to add custom category
+    @FXML private Button deleteCategoryButton;  // Button to delete custom category
 
     private int userId;
 
@@ -61,17 +64,40 @@ public class ExpenseTrackerController {
     }
 
     @FXML
-    public void handleShowExpenses() {
-        System.out.println("DEBUG: handleShowExpenses triggered.");
-        loadExpenses();
-        updateChart();
-        showAlert("✅ Success", "Expenses updated.");
-    }
-
-    @FXML
     private void handleBack() {
         SceneController sceneController = new SceneController(SceneManager.getPrimaryStage());
         sceneController.switchToSceneWithUser("main.fxml", userId);
+    }
+
+    @FXML
+    private void handleAddCustomCategory() {
+        String customCategory = customCategoryField.getText().trim();
+
+        // Validate custom category input
+        if (customCategory.isEmpty()) {
+            showAlert("❌ Error", "Please enter a valid category.");
+            return;
+        }
+
+        // Add the new category to the ComboBox and clear the input field
+        categoryBox.getItems().add(customCategory);
+        customCategoryField.clear();
+        showAlert("✅ Success", "Custom category added: " + customCategory);
+    }
+
+    @FXML
+    private void handleDeleteCustomCategory() {
+        String selectedCategory = categoryBox.getValue();
+
+        // Check if a custom category is selected
+        if (selectedCategory == null || !categoryBox.getItems().contains(selectedCategory)) {
+            showAlert("❌ Error", "Please select a category to delete.");
+            return;
+        }
+
+        // Remove the selected category from the ComboBox
+        categoryBox.getItems().remove(selectedCategory);
+        showAlert("✅ Success", "Category deleted: " + selectedCategory);
     }
 
     private void loadExpenses() {
@@ -106,7 +132,7 @@ public class ExpenseTrackerController {
                 PieChart.Data data = new PieChart.Data(rs.getString("category"), rs.getDouble("total"));
                 expenseChart.getData().add(data);
 
-                // Apply Color Manually
+                // Apply color manually
                 String colorClass = "default-color" + (colorIndex % 8); // Rotate through 8 colors
                 data.getNode().getStyleClass().add(colorClass);
                 colorIndex++;
@@ -126,6 +152,7 @@ public class ExpenseTrackerController {
                 categoryBox.getItems().add(rs.getString("category"));
             }
 
+            // If no categories are available, load default ones
             if (categoryBox.getItems().isEmpty()) {
                 categoryBox.getItems().addAll("Food", "Transport", "Rent", "Shopping", "Other");
             }
