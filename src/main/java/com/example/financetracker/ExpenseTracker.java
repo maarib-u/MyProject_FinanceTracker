@@ -20,7 +20,7 @@ public class ExpenseTracker extends Application {
     // constructor to set the current user and initialize the database connection
     public ExpenseTracker(String username) {
         this.currentUser = username;
-        this.conn = DatabaseManager.getConnection(); // ✅ Connect to DB
+        this.conn = DatabaseManager.getConnection(); // connect to the database
     }
 
     @Override
