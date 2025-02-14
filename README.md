@@ -10,5 +10,5 @@ A simple and user-friendly Java-based Finance Tracker application that allows us
 - **Expense Tracking**: Record your expenses, categorize them, and view them in a table.
 - **Budget Tracker**: Set a monthly budget, track your spending, and receive alerts when approaching or exceeding your budget.
 - **Custom Categories**: Create and delete custom categories for expenses.
-- **Pie Chart Visualization**: View your expenses in pie chart format to understand your spending patterns.
+- **Pie Chart Visualisation**: View your expenses in pie chart format to understand your spending patterns.
 - **Currency Conversion**: Access exchange rates for converting currencies (integration with an external API).
