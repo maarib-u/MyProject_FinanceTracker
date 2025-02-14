@@ -1,0 +1,132 @@
+/* global styling for the whole app */
+.root {
+    -fx-font-family: "Arial";
+    -fx-background-color: #f4f4f4;
+}
+
+/* title and heading styling */
+.title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2C3E50;
+}
+
+/* vbox layout styling */
+VBox {
+    -fx-padding: 20;
+    -fx-alignment: center;
+    -fx-spacing: 15;
+}
+
+/* styling for labels */
+Label {
+    -fx-font-size: 16px;
+    -fx-text-fill: #2C3E50;
+}
+
+/* styling for textfields and passwordfields */
+TextField, PasswordField {
+    -fx-pref-width: 260px;
+    -fx-font-size: 14px;
+    -fx-padding: 6px;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-background-color: white;
+}
+
+/* button styling */
+Button {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 10px 18px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+    -fx-transition: 0.3s;
+}
+
+Button:hover {
+    -fx-background-color: #2980b9;
+}
+
+Button:pressed {
+    -fx-background-color: #1c74a6;
+    -fx-translate-y: 2px;
+}
+
+/* progress bar styling */
+.progress-bar {
+    -fx-background-color: #dfe6e9;
+}
+
+.progress-bar .bar {
+    -fx-background-color: linear-gradient(to right, #3498db, #1abc9c);
+}
+
+/* styling for the progress bar when approaching or exceeding the budget */
+.progress-bar.exceeded .bar {
+    -fx-background-color: linear-gradient(to right, #e74c3c, #d92411);
+}
+
+.progress-bar.approaching .bar {
+    -fx-background-color: linear-gradient(to right, #f1c40f, #f39c12);
+}
+
+.progress-bar.warning .bar {
+    -fx-background-color: linear-gradient(to right, #f39c12, #e74c3c);
+}
+/* insight label for warnings */
+.warning-label {
+    -fx-text-fill: red;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+/* status label styling for budget and total expenses*/
+.status-label {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2C3E50;
+    -fx-padding: 10px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+
+/* Label for progress, showing the budget status */
+#progressLabel {
+    -fx-font-size: 14px;
+    -fx-text-fill: #2C3E50;
+}
+
+/* styling for the piechart */
+.chart {
+    -fx-background-color: white;
+}
+
+/* piechart slice colors */
+.default-color0.chart-pie { -fx-pie-color: #e74c3c; } /* red (spent) */
+.default-color1.chart-pie { -fx-pie-color: #2ecc71; } /* green (remaining) */
+.default-color2.chart-pie { -fx-pie-color: #ff9f43; } /* orange */
+.default-color3.chart-pie { -fx-pie-color: #54a0ff; } /* blue */
+.default-color4.chart-pie { -fx-pie-color: #f368e0; } /* pink */
+.default-color5.chart-pie { -fx-pie-color: #222f3e; } /* dark grey */
+
+/* piechart labels styling */
+.chart-pie-label {
+    -fx-text-fill: black !important;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-effect: dropshadow(gaussian, white, 2, 0.5, 0, 0);
+}
+
+/* piechart border visibility */
+.chart-content {
+    -fx-background-color: white;
+    -fx-border-color: #bdc3c7;
+    -fx-border-radius: 5px;
+}
+

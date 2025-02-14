@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<!-- Main layout of the Welcome screen -->
+<VBox alignment="CENTER" spacing="15" stylesheets="@styles.css"
+      fx:controller="com.example.financetracker.MainController"
+      xmlns:fx="http://javafx.com/fxml">
+
+    <!-- Welcome message with title styling -->
+    <Label text="Welcome! Choose an option:" styleClass="title"/>
+
+    <!-- Button for navigating to Budget Tracker -->
+    <Button fx:id="budgetButton" text="Budget Tracker" onAction="#openBudgetTracker"/>
+
+    <!-- Button for navigating to Expense Tracker -->
+    <Button fx:id="expenseButton" text="Expense Tracker" onAction="#openExpenseTracker"/>
+
+    <!-- Button for navigating to Currency Converter -->
+    <Button fx:id="currencyButton" text="Currency Converter" onAction="#openCurrencyConverter"/>
+
+    <!-- Button for logging out -->
+    <Button fx:id="logoutButton" text="Logout" onAction="#handleLogout"/>
+
+</VBox>
