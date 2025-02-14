@@ -1,3 +1,4 @@
+// ✅ ❌ ⚠️ ❗
 package com.example.financetracker;
 
 import javafx.fxml.FXML;
@@ -12,7 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
-// ✅ ❌ ⚠️
+
 public class BudgetTrackerController {
     @FXML private TextField budgetField;  // input field for budget
     @FXML private Label budgetStatusLabel; // label for budget status
