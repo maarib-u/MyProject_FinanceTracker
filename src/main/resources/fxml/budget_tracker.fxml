@@ -15,7 +15,7 @@
 
     <HBox spacing="20">
         <Button text="Set Budget" onAction="#handleSetBudget"/>
-        <Button text="Back" onAction="#handleBack"/>
+        <Button text="⬅ Back" onAction="#handleBack"/>
     </HBox>
 
     <Label fx:id="budgetStatusLabel" text="Monthly Budget: £0.00" styleClass="status-label"/>

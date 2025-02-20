@@ -38,7 +38,7 @@
     <!-- Update Rates & Back Buttons in One Row -->
     <HBox spacing="20" alignment="CENTER">
         <Button text="Update Rates" onAction="#handleUpdateRates" minWidth="150"/>
-        <Button text="Back" onAction="#handleBack" minWidth="150"/>
+        <Button text="⬅ Back" onAction="#handleBack" minWidth="150"/>
     </HBox>
 
 </VBox>
