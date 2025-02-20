@@ -196,24 +196,31 @@ public class ExpenseTrackerController {
             return;
         }
 
-        // save custom category to the database
+        // Check if the category already exists to prevent duplicates
+        if (categoryBox.getItems().contains(customCategory)) {
+            showAlert("⚠️ Warning", "This category already exists.");
+            return;
+        }
+
+        // Save custom category to the database
         try (Connection conn = DatabaseManager.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(
                      "INSERT INTO UserCategories (user_id, category_name) VALUES (?, ?)")) {
-            pstmt.setInt(1, userId);  // set user id in query
-            pstmt.setString(2, customCategory);  // set custom category in query
-            pstmt.executeUpdate();  // execute query to insert custom category
+            pstmt.setInt(1, userId);
+            pstmt.setString(2, customCategory);
+            pstmt.executeUpdate();
         } catch (SQLException e) {
             showAlert("❌ Error", "Could not save custom category.");
             e.printStackTrace();
             return;
         }
 
-        // add the custom category to the ComboBox
+        // ✅ Instead of clearing everything, just add the new category
         categoryBox.getItems().add(customCategory);
-        customCategoryField.clear();  // clear the input field
+        customCategoryField.clear();
         showAlert("✅ Success", "Custom category added: " + customCategory);
     }
+
 
     // method to delete a custom category
     @FXML
@@ -334,24 +341,30 @@ public class ExpenseTrackerController {
 
     // method to load categories for the current user from the database
     private void loadCategories() {
-        categoryBox.getItems().clear();  // clear the existing categories
         try (Connection conn = DatabaseManager.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement("SELECT category_name FROM UserCategories WHERE user_id = ?")) {
+             PreparedStatement pstmt = conn.prepareStatement(
+                     "SELECT category_name FROM UserCategories WHERE user_id = ?")) {
 
-            pstmt.setInt(1, userId);  // set user id in query
-            ResultSet rs = pstmt.executeQuery();  // execute query to get categories
-            while (rs.next()) {
-                categoryBox.getItems().add(rs.getString("category_name"));  // add categories to ComboBox
-            }
+            pstmt.setInt(1, userId);
+            ResultSet rs = pstmt.executeQuery();
 
-            // if no categories, add default categories
+            // Store current categories to prevent duplicates
             if (categoryBox.getItems().isEmpty()) {
                 categoryBox.getItems().addAll("Food", "Transport", "Rent", "Shopping", "Other");
             }
+
+            while (rs.next()) {
+                String category = rs.getString("category_name");
+                if (!categoryBox.getItems().contains(category)) {
+                    categoryBox.getItems().add(category);  // Add only new categories
+                }
+            }
+
         } catch (SQLException e) {
             showAlert("❌ Error", "Could not load categories.");
         }
     }
+
 
     // method to show alerts to the user
     private void showAlert(String title, String message) {
