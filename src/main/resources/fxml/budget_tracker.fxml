@@ -13,10 +13,11 @@
         <TextField fx:id="budgetField" promptText="Enter budget"/>
     </HBox>
 
-    <HBox spacing="20">
-        <Button text="Set Budget" onAction="#handleSetBudget"/>
-        <Button text="⬅ Back" onAction="#handleBack"/>
+    <HBox spacing="20" alignment="CENTER">
+        <Button text="Set Budget" onAction="#handleSetBudget" prefWidth="120"/>
+        <Button text="⬅ Back" onAction="#handleBack" prefWidth="120"/>
     </HBox>
+
 
     <Label fx:id="budgetStatusLabel" text="Monthly Budget: £0.00" styleClass="status-label"/>
 
