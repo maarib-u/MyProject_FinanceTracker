@@ -7,7 +7,7 @@
       fx:controller="com.example.financetracker.MainController"
       xmlns:fx="http://javafx.com/fxml">
 
-    <!-- Welcome message with improved styling -->
+    <!-- Welcome message -->
     <Label text="Welcome! Choose an option:" styleClass="title"/>
 
     <!-- Button container for better alignment -->
