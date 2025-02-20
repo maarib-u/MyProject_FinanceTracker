@@ -52,7 +52,7 @@ public class ExpenseTrackerController {
 
         loadExpenses();  // Load the expenses when the app starts
         // ✅ Format the amount column to display in £0.00 format
-        amountColumn.setCellFactory(column -> new TableCell<Expense, Double>() {
+        amountColumn.setCellFactory(column -> new TableCell<>() {
             private final DecimalFormat df = new DecimalFormat("£#,##0.00");
 
             @Override
@@ -168,13 +168,13 @@ public class ExpenseTrackerController {
             try (Connection conn = DatabaseManager.getConnection();
                  PreparedStatement pstmt = conn.prepareStatement(
                          "DELETE FROM Expenses WHERE user_id = ? AND amount = ? AND category = ? " +
-                                 "AND CAST(date AS DATETIME2(0)) = CAST(? AS DATETIME2(0))")) {
+                                 "AND CONVERT(VARCHAR, date, 120) = ?")) { // Ensures exact match
 
                 pstmt.setInt(1, userId);
-                pstmt.setDouble(2, selectedExpense.getAmount());
+                pstmt.setBigDecimal(2, java.math.BigDecimal.valueOf(selectedExpense.getAmount())); // Prevents floating-point issues
                 pstmt.setString(3, selectedExpense.getCategory());
 
-                // Convert date format correctly
+                // Ensure date format matches database format exactly
                 String sqlFormattedDate = convertToSQLDateTimeFormat(selectedExpense.getDate(), selectedExpense.getTime());
                 pstmt.setString(4, sqlFormattedDate);
 
@@ -254,7 +254,7 @@ public class ExpenseTrackerController {
         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmationAlert.setTitle("Confirm Deletion");
         confirmationAlert.setHeaderText("Are you sure you want to delete this custom category?");
-        confirmationAlert.setContentText("This action cannot be undone.");
+        confirmationAlert.setContentText("This will remove the category from selection but keep all related expenses.");
         Optional<ButtonType> result = confirmationAlert.showAndWait();
 
         if (result.isPresent() && result.get() == ButtonType.OK) {
@@ -360,13 +360,12 @@ public class ExpenseTrackerController {
     // method to load categories for the current user from the database
     private void loadCategories() {
         try (Connection conn = DatabaseManager.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(
-                     "SELECT category_name FROM UserCategories WHERE user_id = ?")) {
+             PreparedStatement pstmt = conn.prepareStatement("SELECT category_name FROM UserCategories WHERE user_id = ?")) {
 
             pstmt.setInt(1, userId);
             ResultSet rs = pstmt.executeQuery();
 
-            // Store current categories to prevent duplicates
+            // Ensure default categories are kept
             if (categoryBox.getItems().isEmpty()) {
                 categoryBox.getItems().addAll("Food", "Transport", "Rent", "Shopping", "Other");
             }
@@ -382,7 +381,6 @@ public class ExpenseTrackerController {
             showAlert("❌ Error", "Could not load categories.");
         }
     }
-
 
     // method to show alerts to the user
     private void showAlert(String title, String message) {
