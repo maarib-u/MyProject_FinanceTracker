@@ -19,6 +19,9 @@ public class Main extends Application {
 
         // show the primary stage (main window)
         primaryStage.show();
+
+        primaryStage.setResizable(false); // Disables maximise button
+
     }
 
     // main method to launch the application
