@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
@@ -29,6 +30,8 @@ public class ExpenseTrackerController {
 
 
     private int userId;  // user id to identify the current user
+    private static final DecimalFormat currencyFormat = new DecimalFormat("£#,##0.00");
+
 
     // method to set user id and load expenses and categories
     public void setUserId(int userId) {
@@ -48,7 +51,22 @@ public class ExpenseTrackerController {
         expenseTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         loadExpenses();  // Load the expenses when the app starts
+        // ✅ Format the amount column to display in £0.00 format
+        amountColumn.setCellFactory(column -> new TableCell<Expense, Double>() {
+            private final DecimalFormat df = new DecimalFormat("£#,##0.00");
+
+            @Override
+            protected void updateItem(Double amount, boolean empty) {
+                super.updateItem(amount, empty);
+                if (empty || amount == null) {
+                    setText(null);
+                } else {
+                    setText(df.format(amount));
+                }
+            }
+        });
     }
+
 
     // method to add an expense
     // ✅ Add Expense
