@@ -3,41 +3,42 @@
 <?import javafx.scene.layout.*?>
 
 <!-- Root container: VBox for layout -->
-<VBox alignment="CENTER" spacing="15" stylesheets="@styles.css"
+<VBox alignment="CENTER" spacing="20" stylesheets="@styles.css"
       fx:controller="com.example.financetracker.CurrencyConverterController"
       xmlns:fx="http://javafx.com/fxml">
 
-    <!-- Title Section: Displays the page title -->
+    <!-- Title -->
     <Label text="Currency Converter" styleClass="title"/>
 
-    <!-- From Currency Section: Allows user to select the 'from' currency -->
-    <HBox spacing="10">
-        <Label text="From:"/>
-        <ComboBox fx:id="fromCurrencyBox" editable="true"/>
+    <!-- GridPane for Form Layout -->
+    <GridPane hgap="15" vgap="10" alignment="CENTER">
+        <!-- Define column constraints -->
+        <columnConstraints>
+            <ColumnConstraints minWidth="120" halignment="RIGHT"/>
+            <ColumnConstraints minWidth="220"/>
+        </columnConstraints>
+
+        <!-- Currency Selection Fields -->
+        <Label text="From Currency:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <ComboBox fx:id="fromCurrencyBox" editable="true" prefWidth="220" minWidth="220" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+        <Label text="To Currency:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <ComboBox fx:id="toCurrencyBox" editable="true" prefWidth="220" minWidth="220" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+        <Label text="Amount:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <TextField fx:id="amountField" promptText="Enter amount" prefWidth="220" minWidth="220" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+    </GridPane>
+
+    <!-- Convert Button -->
+    <Button text="Convert" onAction="#handleConvert" minWidth="250"/>
+
+    <!-- Converted Amount Display -->
+    <Label fx:id="resultLabel" text="Converted Amount: £0.00" styleClass="result-label"/>
+
+    <!-- Update Rates & Back Buttons in One Row -->
+    <HBox spacing="20" alignment="CENTER">
+        <Button text="Update Rates" onAction="#handleUpdateRates" minWidth="150"/>
+        <Button text="Back" onAction="#handleBack" minWidth="150"/>
     </HBox>
-
-    <!-- To Currency Section: Allows user to select the 'to' currency -->
-    <HBox spacing="10">
-        <Label text="To:"/>
-        <ComboBox fx:id="toCurrencyBox" editable="true"/>
-    </HBox>
-
-    <!-- Amount Input Section: User enters the amount to convert -->
-    <HBox spacing="10">
-        <Label text="Amount:"/>
-        <TextField fx:id="amountField" promptText="Enter amount"/>
-    </HBox>
-
-    <!-- Convert Button: Triggers the currency conversion process -->
-    <Button text="Convert" onAction="#handleConvert"/>
-
-    <!-- Result Label: Displays the converted amount -->
-    <Label fx:id="resultLabel" text="Converted Amount: 0.00"/>
-
-    <!-- Update Rates Button: Refreshes the exchange rates from the API -->
-    <Button text="Update Rates" onAction="#handleUpdateRates"/>
-
-    <!-- Back Button: Navigates back to the previous screen -->
-    <Button text="Back" onAction="#handleBack"/>
 
 </VBox>

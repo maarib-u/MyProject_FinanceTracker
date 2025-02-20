@@ -35,6 +35,11 @@ TextField, PasswordField {
     -fx-background-color: white;
 }
 
+#amountField {
+    -fx-pref-width: 220px !important;
+    -fx-min-width: 220px !important;
+}
+
 /* button styling */
 Button {
     -fx-background-color: #3498db;
