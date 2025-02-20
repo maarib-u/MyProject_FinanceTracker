@@ -1,5 +1,7 @@
 package com.example.financetracker;
 
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.chart.PieChart;
@@ -8,16 +10,23 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 public class ExpenseTrackerController {
     @FXML private TextField expenseField;  // field for entering expense amount
     @FXML private ComboBox<String> categoryBox;  // drop-down for selecting category
-    @FXML private ListView<String> expenseList;  // list view to display expenses
     @FXML private PieChart expenseChart;  // pie chart to show expense distribution
     @FXML private TextField customCategoryField;  // text field for adding a custom category
     @FXML private Label totalAmountLabel;  // label to show total expenses
     @FXML private Label budgetStatusLabel;  // Label for displaying monthly budget
+    @FXML private TableView<Expense> expenseTable;
+    @FXML private TableColumn<Expense, String> categoryColumn;
+    @FXML private TableColumn<Expense, Double> amountColumn;
+    @FXML private TableColumn<Expense, String> dateColumn;
+    @FXML private TableColumn<Expense, String> timeColumn;
+
 
     private int userId;  // user id to identify the current user
 
@@ -29,12 +38,24 @@ public class ExpenseTrackerController {
         loadExpenses();  // load expenses from database
         updateChart();  // update pie chart
     }
+    @FXML
+    public void initialize() {
+        categoryColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCategory()));
+        amountColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getAmount()).asObject());
+        dateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDate()));
+        timeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTime()));
+
+        expenseTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        loadExpenses();  // Load the expenses when the app starts
+    }
 
     // method to add an expense
+    // ✅ Add Expense
     @FXML
     private void handleAddExpense() {
-        String category = categoryBox.getValue();  // get selected category
-        String amountText = expenseField.getText();  // get entered amount
+        String category = categoryBox.getValue();
+        String amountText = expenseField.getText();
 
         if (category == null || amountText.isEmpty()) {
             showAlert("❌ Error", "Please enter an amount and select a category.");
@@ -42,19 +63,19 @@ public class ExpenseTrackerController {
         }
 
         try {
-            double amount = Double.parseDouble(amountText);  // convert amount to double
+            double amount = Double.parseDouble(amountText);
             try (Connection conn = DatabaseManager.getConnection();
                  PreparedStatement pstmt = conn.prepareStatement(
                          "INSERT INTO Expenses (user_id, amount, category, date) VALUES (?, ?, ?, GETDATE())")) {
 
-                pstmt.setInt(1, userId);  // set user id in query
-                pstmt.setDouble(2, amount);  // set amount in query
-                pstmt.setString(3, category);  // set category in query
-                pstmt.executeUpdate();  // execute query to add expense
+                pstmt.setInt(1, userId);
+                pstmt.setDouble(2, amount);
+                pstmt.setString(3, category);
+                pstmt.executeUpdate();
 
                 showAlert("✅ Success", "Expense added successfully!");
-                loadExpenses();  // reload the expenses list
-                updateChart();  // update the pie chart
+                loadExpenses();
+                updateChart();
             }
         } catch (NumberFormatException e) {
             showAlert("❌ Error", "Invalid amount entered.");
@@ -63,48 +84,92 @@ public class ExpenseTrackerController {
             e.printStackTrace();
         }
     }
+    private String convertToSQLDateTimeFormat(String ukDate, String time) {
+        try {
+            DateTimeFormatter ukFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+            DateTimeFormatter sqlFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    // method to delete an expense
+            // Combine UK Date and Time before converting
+            String combinedDateTime = ukDate + " " + time;
+            LocalDateTime parsedDateTime = LocalDateTime.parse(combinedDateTime, ukFormat);
+
+            return parsedDateTime.format(sqlFormat);
+        } catch (Exception e) {
+            showAlert("❌ Error", "Failed to convert date format.");
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // ✅ Load Expenses
+    private void loadExpenses() {
+        expenseTable.getItems().clear();
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(
+                     "SELECT category, amount, date FROM Expenses WHERE user_id = ? ORDER BY date DESC")) {
+
+            pstmt.setInt(1, userId);
+            ResultSet rs = pstmt.executeQuery();
+
+            DateTimeFormatter ukDateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            DateTimeFormatter ukTimeFormat = DateTimeFormatter.ofPattern("HH:mm:ss");
+
+            while (rs.next()) {
+                double amount = rs.getDouble("amount");
+                String category = rs.getString("category");
+
+                LocalDateTime dateTime = rs.getTimestamp("date").toLocalDateTime();
+                String formattedDate = dateTime.format(ukDateFormat);
+                String formattedTime = dateTime.format(ukTimeFormat);
+
+                expenseTable.getItems().add(new Expense(category, amount, formattedDate, formattedTime));
+            }
+
+        } catch (SQLException e) {
+            showAlert("❌ Error", "Could not fetch expenses.");
+            e.printStackTrace();
+        }
+    }
+    // ✅ Delete Expense
     @FXML
     private void handleDeleteExpense() {
-        String selectedExpense = expenseList.getSelectionModel().getSelectedItem();  // get selected expense
+        Expense selectedExpense = expenseTable.getSelectionModel().getSelectedItem();
 
         if (selectedExpense == null) {
             showAlert("❌ Error", "Please select an expense to delete.");
             return;
         }
 
-        // confirmation prompt before deleting the expense
         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmationAlert.setTitle("Confirm Deletion");
-        confirmationAlert.setHeaderText("Are you sure you want to delete the expense?");
+        confirmationAlert.setHeaderText("Are you sure you want to delete this expense?");
         confirmationAlert.setContentText("This action cannot be undone.");
         Optional<ButtonType> result = confirmationAlert.showAndWait();
 
         if (result.isPresent() && result.get() == ButtonType.OK) {
             try (Connection conn = DatabaseManager.getConnection();
                  PreparedStatement pstmt = conn.prepareStatement(
-                         "DELETE FROM Expenses WHERE user_id = ? AND amount = ? AND category = ? AND date = ?")) {
+                         "DELETE FROM Expenses WHERE user_id = ? AND amount = ? AND category = ? " +
+                                 "AND CAST(date AS DATETIME2(0)) = CAST(? AS DATETIME2(0))")) {
 
-                // split the selected expense details to delete
-                String[] expenseDetails = selectedExpense.split(" - ");
-                double amount = Double.parseDouble(expenseDetails[0].replace("£", ""));
-                String category = expenseDetails[1];
-                String date = expenseDetails[2];
+                pstmt.setInt(1, userId);
+                pstmt.setDouble(2, selectedExpense.getAmount());
+                pstmt.setString(3, selectedExpense.getCategory());
 
-                pstmt.setInt(1, userId);  // set user id in query
-                pstmt.setDouble(2, amount);  // set amount in query
-                pstmt.setString(3, category);  // set category in query
-                pstmt.setString(4, date);  // set date in query
+                // Convert date format correctly
+                String sqlFormattedDate = convertToSQLDateTimeFormat(selectedExpense.getDate(), selectedExpense.getTime());
+                pstmt.setString(4, sqlFormattedDate);
 
-                int rowsAffected = pstmt.executeUpdate();  // execute the delete query
+                System.out.println("Deleting expense with date: " + sqlFormattedDate); // Debugging log
+
+                int rowsAffected = pstmt.executeUpdate();
 
                 if (rowsAffected > 0) {
                     showAlert("✅ Success", "Expense deleted successfully!");
-                    loadExpenses();  // reload the expenses list
-                    updateChart();  // update the pie chart
+                    loadExpenses();
+                    updateChart();
                 } else {
-                    showAlert("❌ Error", "Could not delete expense.");
+                    showAlert("❌ Error", "Could not delete expense. No match found.");
                 }
             } catch (SQLException e) {
                 showAlert("❌ Error", "Failed to delete expense.");
@@ -112,6 +177,7 @@ public class ExpenseTrackerController {
             }
         }
     }
+
 
     // method to navigate back to the main screen
     @FXML
@@ -188,25 +254,6 @@ public class ExpenseTrackerController {
         }
     }
 
-    // method to load expenses for the current user from the database
-    private void loadExpenses() {
-        expenseList.getItems().clear();  // clear the existing list
-        try (Connection conn = DatabaseManager.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(
-                     "SELECT amount, category, date FROM Expenses WHERE user_id = ? ORDER BY date DESC")) {
-
-            pstmt.setInt(1, userId);  // set user id in query
-            ResultSet rs = pstmt.executeQuery();  // execute query to get expenses
-
-            while (rs.next()) {
-                // format each expense entry
-                String expenseEntry = "£" + rs.getDouble("amount") + " - " + rs.getString("category") + " - " + rs.getString("date");
-                expenseList.getItems().add(expenseEntry);  // add to the list
-            }
-        } catch (SQLException e) {
-            showAlert("❌ Error", "Could not fetch expenses.");
-        }
-    }
 
     // method to get the user's monthly budget from the database
     private double getMonthlyBudget() {
