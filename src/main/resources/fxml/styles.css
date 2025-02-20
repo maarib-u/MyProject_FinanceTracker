@@ -39,6 +39,76 @@ TextField, PasswordField {
     -fx-pref-width: 220px !important;
     -fx-min-width: 220px !important;
 }
+/* Login and Register Buttons (Same Size & Style) */
+.auth-button {
+    -fx-pref-width: 110px;  /* Same width for both buttons */
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+}
+
+.auth-button:hover {
+    -fx-background-color: #2980b9;
+}
+
+.auth-button:pressed {
+    -fx-background-color: #1c74a6;
+    -fx-translate-y: 2px;
+}
+/* Welcome title styling */
+.title {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2C3E50;
+    -fx-padding: 10px;
+}
+
+/* Standard button styling */
+.menu-button {
+    -fx-pref-width: 220px;  /* Ensuring all buttons are the same width */
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-color: #3498db;
+    -fx-padding: 12px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-cursor: hand;
+}
+
+.menu-button:hover {
+    -fx-background-color: #2980b9;
+}
+
+.menu-button:pressed {
+    -fx-background-color: #1c74a6;
+}
+
+/* Logout button - different color for contrast */
+.logout-button {
+    -fx-pref-width: 220px;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-color: #e74c3c;
+    -fx-padding: 12px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-cursor: hand;
+}
+
+.logout-button:hover {
+    -fx-background-color: #b5291a;
+}
+
+.logout-button:pressed {
+    -fx-background-color: #77160d;
+}
 
 /* button styling */
 Button {

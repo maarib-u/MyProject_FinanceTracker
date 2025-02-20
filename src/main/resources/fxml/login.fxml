@@ -18,10 +18,8 @@
     <Label text="Password:"/>
     <PasswordField fx:id="passwordField" promptText="Enter password"/>
 
-    <!-- Button to log the user in -->
-    <Button text="Login" onAction="#handleLogin"/>
-
-    <!-- Button to register a new user -->
-    <Button text="Register" onAction="#handleRegister"/>
+    <!-- Login and Register Buttons (Vertically Stacked) -->
+    <Button text="Login" onAction="#handleLogin" styleClass="auth-button"/>
+    <Button text="Register" onAction="#handleRegister" styleClass="auth-button"/>
 
 </VBox>
