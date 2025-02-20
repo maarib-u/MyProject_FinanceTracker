@@ -51,7 +51,7 @@ public class ExpenseTrackerController {
         expenseTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         loadExpenses();  // Load the expenses when the app starts
-        // ✅ Format the amount column to display in £0.00 format
+        // format the amount column to display in £0.00 format
         amountColumn.setCellFactory(column -> new TableCell<>() {
             private final DecimalFormat df = new DecimalFormat("£#,##0.00");
 
@@ -69,7 +69,6 @@ public class ExpenseTrackerController {
 
 
     // method to add an expense
-    // ✅ Add Expense
     @FXML
     private void handleAddExpense() {
         String category = categoryBox.getValue();
@@ -119,7 +118,7 @@ public class ExpenseTrackerController {
         }
     }
 
-    // ✅ Load Expenses
+    // load expenses
     private void loadExpenses() {
         expenseTable.getItems().clear();
         try (Connection conn = DatabaseManager.getConnection();
@@ -148,7 +147,7 @@ public class ExpenseTrackerController {
             e.printStackTrace();
         }
     }
-    // ✅ Delete Expense
+    // delete expense
     @FXML
     private void handleDeleteExpense() {
         Expense selectedExpense = expenseTable.getSelectionModel().getSelectedItem();
@@ -196,7 +195,6 @@ public class ExpenseTrackerController {
         }
     }
 
-
     // method to navigate back to the main screen
     @FXML
     private void handleBack() {
@@ -220,7 +218,7 @@ public class ExpenseTrackerController {
             return;
         }
 
-        // Save custom category to the database
+        // save custom category to the database
         try (Connection conn = DatabaseManager.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(
                      "INSERT INTO UserCategories (user_id, category_name) VALUES (?, ?)")) {
@@ -233,7 +231,7 @@ public class ExpenseTrackerController {
             return;
         }
 
-        // ✅ Instead of clearing everything, just add the new category
+        // instead of clearing everything, just add the new category
         categoryBox.getItems().add(customCategory);
         customCategoryField.clear();
         showAlert("✅ Success", "Custom category added: " + customCategory);
@@ -278,7 +276,6 @@ public class ExpenseTrackerController {
             }
         }
     }
-
 
     // method to get the user's monthly budget from the database
     private double getMonthlyBudget() {
@@ -338,7 +335,7 @@ public class ExpenseTrackerController {
                 data.setName(String.format("%s - £%.2f (%.2f%%)", category, totalAmount, percentage));
             }
 
-            // Fetch the monthly budget from the database
+            // fetch the monthly budget from the database
             double monthlyBudget = getMonthlyBudget();
 
             // display the total amount and budget in the labels
