@@ -3,23 +3,19 @@
 <?import javafx.scene.layout.*?>
 
 <!-- Main layout of the Welcome screen -->
-<VBox alignment="CENTER" spacing="15" stylesheets="@styles.css"
+<VBox alignment="CENTER" spacing="20" stylesheets="@styles.css"
       fx:controller="com.example.financetracker.MainController"
       xmlns:fx="http://javafx.com/fxml">
 
-    <!-- Welcome message with title styling -->
+    <!-- Welcome message with improved styling -->
     <Label text="Welcome! Choose an option:" styleClass="title"/>
 
-    <!-- Button for navigating to Budget Tracker -->
-    <Button fx:id="budgetButton" text="Budget Tracker" onAction="#openBudgetTracker"/>
-
-    <!-- Button for navigating to Expense Tracker -->
-    <Button fx:id="expenseButton" text="Expense Tracker" onAction="#openExpenseTracker"/>
-
-    <!-- Button for navigating to Currency Converter -->
-    <Button fx:id="currencyButton" text="Currency Converter" onAction="#openCurrencyConverter"/>
-
-    <!-- Button for logging out -->
-    <Button fx:id="logoutButton" text="Logout" onAction="#handleLogout"/>
+    <!-- Button container for better alignment -->
+    <VBox spacing="15" alignment="CENTER">
+        <Button fx:id="budgetButton" text="Budget Tracker" onAction="#openBudgetTracker" styleClass="menu-button"/>
+        <Button fx:id="expenseButton" text="Expense Tracker" onAction="#openExpenseTracker" styleClass="menu-button"/>
+        <Button fx:id="currencyButton" text="Currency Converter" onAction="#openCurrencyConverter" styleClass="menu-button"/>
+        <Button fx:id="logoutButton" text="Logout" onAction="#handleLogout" styleClass="logout-button"/>
+    </VBox>
 
 </VBox>
