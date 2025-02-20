@@ -39,6 +39,27 @@ TextField, PasswordField {
     -fx-pref-width: 220px !important;
     -fx-min-width: 220px !important;
 }
+/* Login and Register Buttons (Same Size & Style) */
+.auth-button {
+    -fx-pref-width: 110px;  /* Same width for both buttons */
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+}
+
+.auth-button:hover {
+    -fx-background-color: #2980b9;
+}
+
+.auth-button:pressed {
+    -fx-background-color: #1c74a6;
+    -fx-translate-y: 2px;
+}
 
 /* button styling */
 Button {
