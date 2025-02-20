@@ -102,6 +102,7 @@ TextField, PasswordField {
     -fx-cursor: hand;
 }
 
+
 .logout-button:hover {
     -fx-background-color: #b5291a;
 }
