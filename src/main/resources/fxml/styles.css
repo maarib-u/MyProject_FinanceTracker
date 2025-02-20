@@ -39,6 +39,20 @@ TextField, PasswordField {
     -fx-pref-width: 220px !important;
     -fx-min-width: 220px !important;
 }
+
+#expenseField {
+    -fx-pref-width: 200px !important;
+    -fx-min-width: 150px !important;
+    -fx-max-width: 200px !important;  /* Add max-width to enforce strict size */
+}
+
+#customCategoryField {
+    -fx-pref-width: 200px !important;
+    -fx-min-width: 150px !important;
+    -fx-max-width: 200px !important;  /* Add max-width to enforce strict size */
+}
+
+
 /* Login and Register Buttons (Same Size & Style) */
 .auth-button {
     -fx-pref-width: 110px;  /* Same width for both buttons */
@@ -89,6 +103,28 @@ TextField, PasswordField {
     -fx-background-color: #1c74a6;
 }
 
+/* button styling */
+.expense-button {
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-color: #3498db;
+    -fx-cursor: hand;
+    -fx-font-size: 14px;  /* Increase font size */
+    -fx-padding: 8px 16px; /* Increase padding */
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-min-width: 150px;  /* Ensure they are larger */
+    -fx-pref-width: 150px;
+}
+
+.expense-button:hover {
+    -fx-background-color: #2980b9;
+}
+
+.expense-button:pressed {
+    -fx-background-color: #1c74a6;
+}
+
 /* Logout button - different color for contrast */
 .logout-button {
     -fx-pref-width: 220px;
@@ -109,6 +145,79 @@ TextField, PasswordField {
 
 .logout-button:pressed {
     -fx-background-color: #77160d;
+}
+/* Global Styles */
+.root {
+    -fx-font-family: "Arial";
+    -fx-background-color: #f4f4f4;
+}
+
+/* Title Styling */
+.title {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2C3E50;
+    -fx-padding: 10px;
+}
+
+/* ComboBox Styling */
+ComboBox {
+    -fx-pref-width: 200px;
+    -fx-font-size: 14px;
+    -fx-padding: 2px;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-background-color: white;
+}
+
+
+/* Make the Add/Delete Category buttons bigger and more prominent */
+.add-category-button, .delete-category-button {
+    -fx-font-size: 14px;  /* Increase font size */
+    -fx-font-weight: bold;
+    -fx-padding: 8px 16px; /* Increase padding */
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-min-width: 110px;  /* Ensure they are larger */
+    -fx-pref-width: 130px;
+}
+
+/* Green Add Button */
+.add-category-button {
+    -fx-background-color: #2ecc71;
+    -fx-text-fill: white;
+}
+
+.add-category-button:hover {
+    -fx-background-color: #27ae60;
+}
+
+/* Red Delete Button */
+.delete-category-button {
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: white;
+}
+
+.delete-category-button:hover {
+    -fx-background-color: #c0392b;
+}
+
+
+/* Status Labels (Total Expenses & Budget) */
+.status-label {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2C3E50;
+    -fx-padding: 10px;
+}
+
+/* Expense List Styling */
+.expense-list {
+    -fx-pref-height: 150px;
+    -fx-background-color: white;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 5px;
 }
 
 /* button styling */

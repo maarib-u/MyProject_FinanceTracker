@@ -4,54 +4,58 @@
 <?import javafx.scene.chart.PieChart?>
 
 <!-- Layout for the Expense Tracker screen -->
-<VBox alignment="CENTER" spacing="15" stylesheets="@styles.css"
+<VBox alignment="CENTER" spacing="20" stylesheets="@styles.css"
       fx:controller="com.example.financetracker.ExpenseTrackerController"
       xmlns:fx="http://javafx.com/fxml">
 
-    <!-- Title label displaying 'Expense Tracker' -->
+    <!-- Title -->
     <Label text="Expense Tracker" styleClass="title"/>
 
-    <!-- Amount input field and label -->
-    <HBox spacing="10">
-        <Label text="Amount:"/>
-        <TextField fx:id="amountField" promptText="Enter amount"/>
+    <!-- GridPane for Form Inputs -->
+    <GridPane hgap="15" vgap="10" alignment="CENTER">
+        <!-- Column Constraints for Proper Alignment -->
+        <columnConstraints>
+            <ColumnConstraints minWidth="140" halignment="RIGHT"/>
+            <ColumnConstraints minWidth="250"/>
+        </columnConstraints>
+
+        <!-- Amount Input -->
+        <Label text="Amount:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <TextField fx:id="expenseField" promptText="Enter amount" prefWidth="250"
+                   GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+        <!-- Category Selection -->
+        <Label text="Category:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <ComboBox fx:id="categoryBox" promptText="Select Category" prefWidth="250"
+                  GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+        <!-- Custom Category Input & Buttons (Proper Alignment) -->
+        <Label text="Custom Category:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <HBox spacing="10" alignment="CENTER_LEFT" GridPane.rowIndex="2" GridPane.columnIndex="1">
+            <TextField fx:id="customCategoryField" promptText="Enter new category" prefWidth="170"/>
+            <Button text="➕ Add" onAction="#handleAddCustomCategory" styleClass="add-category-button"/>
+            <Button text="❌ Delete" onAction="#handleDeleteCustomCategory" styleClass="delete-category-button"/>
+        </HBox>
+
+    </GridPane>
+
+    <!-- Buttons for Adding/Deleting Expense (Properly Centered) -->
+    <HBox spacing="15" alignment="CENTER">
+        <Button text="➕ Add Expense" onAction="#handleAddExpense" styleClass="expense-button"/>
+        <Button text="🗑 Delete Expense" onAction="#handleDeleteExpense" styleClass="expense-button"/>
+        <Button text="⬅ Back" onAction="#handleBack" styleClass="expense-button"/>
     </HBox>
 
-    <!-- Category selection field with delete option -->
-    <HBox spacing="10">
-        <Label text="Category:"/>
-        <ComboBox fx:id="categoryBox" promptText="Select Category"/>
-        <Button text="Delete Category" onAction="#handleDeleteCustomCategory"/> <!-- Button to delete custom category -->
-    </HBox>
-
-    <!-- Custom category input field with add button -->
-    <HBox spacing="10">
-        <Label text="Custom Category:"/>
-        <TextField fx:id="customCategoryField" promptText="Enter a new category"/>
-        <Button text="Add Custom Category" onAction="#handleAddCustomCategory"/> <!-- Button to add custom category -->
-    </HBox>
-
-    <!-- Buttons for adding expense and deleting selected expense -->
-    <HBox spacing="10">
-        <Button text="Add Expense" onAction="#handleAddExpense"/>
-        <Button text="Delete Expense" onAction="#handleDeleteExpense"/>
-        <!-- Button to go back to the main screen -->
-        <Button text="Back" onAction="#handleBack"/>
-    </HBox>
-
-    <!-- Display Total Expenses and Monthly Budget side by side -->
-    <HBox spacing="20" alignment="CENTER">
-        <!-- Total Expenses Label -->
+    <!-- Budget and Total Expense Summary -->
+    <HBox spacing="30" alignment="CENTER">
         <Label fx:id="totalAmountLabel" text="Total Expenses: £0.00" styleClass="status-label"/>
-
-        <!-- Monthly Budget Label -->
         <Label fx:id="budgetStatusLabel" text="Monthly Budget: £0.00" styleClass="status-label"/>
     </HBox>
 
-    <!-- List view to display all expenses -->
-    <ListView fx:id="expenseList"/>
+    <!-- Expense List -->
+    <ListView fx:id="expenseList" prefHeight="150" styleClass="expense-list"/>
 
-    <!-- PieChart to display expenses breakdown -->
-    <PieChart fx:id="expenseChart" prefWidth="400" prefHeight="400"/>
+    <!-- Expense Breakdown Chart -->
+    <PieChart fx:id="expenseChart" prefWidth="400" prefHeight="350"/>
 
 </VBox>

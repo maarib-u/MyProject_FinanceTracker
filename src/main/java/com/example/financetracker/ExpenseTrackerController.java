@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 public class ExpenseTrackerController {
-    @FXML private TextField amountField;  // field for entering expense amount
+    @FXML private TextField expenseField;  // field for entering expense amount
     @FXML private ComboBox<String> categoryBox;  // drop-down for selecting category
     @FXML private ListView<String> expenseList;  // list view to display expenses
     @FXML private PieChart expenseChart;  // pie chart to show expense distribution
@@ -34,7 +34,7 @@ public class ExpenseTrackerController {
     @FXML
     private void handleAddExpense() {
         String category = categoryBox.getValue();  // get selected category
-        String amountText = amountField.getText();  // get entered amount
+        String amountText = expenseField.getText();  // get entered amount
 
         if (category == null || amountText.isEmpty()) {
             showAlert("❌ Error", "Please enter an amount and select a category.");
