@@ -52,7 +52,7 @@
         <Label fx:id="budgetStatusLabel" text="Monthly Budget: £0.00" styleClass="status-label"/>
     </HBox>
 
-    <TableView fx:id="expenseTable" prefHeight="200" styleClass="expense-table">
+    <TableView fx:id="expenseTable" prefHeight="120" styleClass="expense-table">
         <columns>
             <TableColumn text="Category" fx:id="categoryColumn" prefWidth="120"/>
             <TableColumn text="Amount (£)" fx:id="amountColumn" prefWidth="100"/>
@@ -63,6 +63,6 @@
 
 
     <!-- Expense Breakdown Chart -->
-    <PieChart fx:id="expenseChart" prefWidth="400" prefHeight="350"/>
+    <PieChart fx:id="expenseChart" prefWidth="350" prefHeight="350"/>
 
 </VBox>
